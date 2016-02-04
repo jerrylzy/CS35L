@@ -1,0 +1,57 @@
+Q1:
+Since 'case_long_iso_time_style:' is a label for the goto command,
+only one of which to this label is in 'ls.c', and that line is deleted
+in the patch, we can safely remove it.
+
+It was not necessary to remove that line since it affects nothing.
+The compiler will ignore it since nothing uses this label.
+
+Q2:
+If no translation was found by the function 'dcgettext',
+it will return the same value as long_time_format[i].
+
+So for locales that do not have a translation, 
+it will display something that the particular language speaker
+cannot understand.
+
+The --time-style=long-iso option still works, 
+but not everyone knows this command. 
+So it is not a good idea generally to patch it the way Brady did.
+
+Q3:
+When we want to output random lines on the file /dev/null,
+it outputs IndexError when calling chooseline().
+
+Traceback (most recent call last):
+  File "./randline.py", line 70, in <module>
+    main()
+  File "./randline.py", line 64, in main
+    sys.stdout.write(generator.chooseline())
+  File "./randline.py", line 34, in chooseline
+    return random.choice(self.lines)
+  File "/usr/lib64/python2.7/random.py", line 274, in choice
+    return seq[int(self.random() * len(seq))]
+    # raises IndexError if seq is empty
+IndexError: list index out of range
+
+It is because in the code, the condition is numlines < 0, so
+if we don't specify that the number of lines is zero,
+they function will choose a line from a file with no lines.
+That's undefined behavior.
+
+Q4:
+Run randline.py under python3 gives us:
+  File "randline.py", line 65
+    except IOError as (errno, strerror):
+                      ^
+SyntaxError: invalid syntax
+
+By python 3 documentation, in python3 IOError is merged into OSError,
+and the corresponding argument changed.
+
+The correct way should be:
+
+except OSError as err:
+       parser.error("OS error: {0}".format(err))
+
+

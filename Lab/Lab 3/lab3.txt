@@ -1,0 +1,97 @@
+/*
+ * <Jerry Liu>
+ * CS 35L       Lab 3
+ *
+ */
+
+1. Download the source file
+
+a. Download source codes
+wget ftp://ftp.gnu.org/gnu/coreutils/coreutils-7.6.tar.gz
+
+b. Extract the source files
+tar -xzvf coreutils-7.6.tar.gz
+
+2.
+
+a. Go to the folder created and configure the path
+cd coreutils-7.6/ &&
+./configure --prefix=/u/cs/ugrad/zhongyan/cs35L/lab3/coreutils
+
+b. Compile the program
+
+make -j30 && make install
+Since on lnxsrv09 there are 32 logical processors, compile it with 30 threads
+Then install it to my specified folder.
+
+/* CPU Info: cat /proc/cpuinfo */
+
+2. Reproduce the problem
+
+a. export the locale:
+export LC_ALL='en_US.UTF-8'
+
+b. go to the directory
+cd ../coreutils/bin
+
+c. the problem
+
+$ ./ls -l /bin/bash
+-rwxr-xr-x 1 root root 960376 2015-07-08 04:11 /bin/bash
+
+Obviously we got the "buggy" format.
+
+4. Apply Brady's Patch
+
+a. go to the folder
+cd ../../coreutils-7.6/src/
+
+b. Apply the patch
+
+I copied and pasted diff file into a file called patch.diff.
+I also changed the paths to ./coreutils-7.6/src/ls.c
+for both the original file and the modified file.
+
+$ patch -p0 < patch.diff
+
+And I checked the file, the change is successful.
+
+5. Recompile the program
+
+cd .. && make
+We don't need 'make clean' since the program will
+automatically recompile the changed parts. i.e. ls
+
+We have to go to the top level of our source code to compile.
+
+6. Test
+
+Go back to the lab folder:
+cd ..
+
+For a recently modified file:
+
+a. Unmodified version
+$ ./coreutils/bin/ls -l ./coreutils-7.6.tar.gz 
+-rw-r--r-- 1 zhongyan csugrad 10014650 2016-01-19 12:09 ./coreutils-7.6.tar.gz
+
+b. Fixed version
+$ ./coreutils-7.6/src/ls -l ./coreutils-7.6.tar.gz 
+-rw-r--r-- 1 zhongyan csugrad 10014650 Jan 19 12:09 ./coreutils-7.6.tar.gz
+
+For an at least a year- old file:
+I touched the coreutils-7.6.tar.gz file:
+
+touch -t 1401190000 coreutils-7.6.tar.gz
+
+So now it has the date Jan 19 2014 0:00
+
+a. Unmodified version
+$ ./coreutils/bin/ls -l ./coreutils-7.6.tar.gz
+-rw-r--r-- 1 zhongyan csugrad 10014650 2014-01-19 00:00 ./coreutils-7.6.tar.gz
+
+b. Fixed version
+./coreutils-7.6/src/ls -l ./coreutils-7.6.tar.gz
+-rw-r--r-- 1 zhongyan csugrad 10014650 Jan 19  2014 ./coreutils-7.6.tar.gz
+
+So it is correct now.
