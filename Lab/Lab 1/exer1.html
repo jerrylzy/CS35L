@@ -1,0 +1,354 @@
+<!DOCTYPE html
+	PUBLIC "-//W3C//DTD HTML 4.01//EN"
+	"http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv='Content-Type' content='text/html;charset=UTF-8'>
+<title>Assignment 1. Getting to know your system</title>
+</head>
+
+<body>
+
+<h1>Assignment 1. Getting to know your system</h1>
+
+<p><small>[<a href='../index.html'>35L home</a> &gt; <a href='../assign.html'>assignments</a>]</small></p>
+
+<h2>Laboratory: Linux and Emacs scavenger hunt</h2>
+
+<!-- diff，在UNIX系統上的一個工具程式，它可以比較兩個檔案之間的不同。通常它被用來比較同一個檔案，在不同版本間的差異。它可以產生一個擴展名為.diff或.patch的檔案，這個檔案可以被另一個工具程式patch來使用。-->
+
+<p>Instructions: Use the commands that you learned in class to find
+answers to these questions. Don't use a search engine like Google, and
+don't ask your neighbor. If you need a hint, ask the <abbr>TA</abbr>.
+When you find a new command, run it so you can see exactly how it
+works. In addition to turning in the answers to these questions, turn
+in a description of your session discovering them. As you do actions,
+use a Linux-based editor to record your keystrokes and each answer in
+files <samp>key1.txt</samp> and <samp>ans1.txt</samp> that you will
+submit as part of the assignment.</p>
+
+<ol>
+<li>
+How can you get <samp>man</samp> to print all the commands that have a specific
+word in their man page (or at least the description part of the
+man page)? (hint: <samp>man man</samp>)</li>
+
+<li>
+Where are the <samp>cp</samp> and <samp>wc</samp> programs
+located in the file system?</li>
+
+<li>
+What executable programs have names that are just one character long,
+and what do they do?</li>
+
+<li>
+When you execute the command named by the symbolic
+link <samp>/usr/bin/emacs</samp>, which file actually is
+executed?</li>
+
+<li>
+The <samp>chmod</samp> program changes permissions on a file. What
+does the symbolic mode <samp>g+s,o-x</samp> mean, in terms of permissions?</li>
+
+<li>
+What option to <samp>find</samp> lets you search for files that have
+been modified in the last three weeks?</li>
+
+<li>
+Use the previous answer to find all directories modified in the last
+three weeks.</li>
+
+<li>
+Of the files in the same directory as <samp>find</samp>, how many of
+them are symbolic links?</li>
+
+<li>
+What is the oldest regular file in the <samp>/usr/lib</samp> directory?</li>
+
+<li>
+Where does the <samp>locale</samp> command get its data from?</li>
+
+<li>
+In Emacs, what commands have <samp>sort</samp> in their name?</li>
+
+<li>
+Briefly, what do the Emacs keystrokes <samp>C-M-a</samp>
+through <samp>C-M-h</samp> do? Can you list their actions
+concisely?</li>
+
+<li>
+In more detail, what does the Emacs keystroke <samp>C-g</samp> do?</li>
+
+<li>
+What does the Emacs <samp>yank</samp> function do?</li>
+
+<li>
+When looking at the directory <samp>/usr/bin</samp>, what's the
+difference between the output of the <samp>ls -l</samp> command,
+and the directory listing of the Emacs <samp>dired</samp> command?</li>
+
+</ol>
+
+<h2>Homework: Learning to use Emacs</h2>
+
+<!-- DELETEME DELETEME DELETEME -->
+
+<ul>
+ <li>Keith Waclena, <a
+  href='http://www2.lib.uchicago.edu/~keith//tcl-course/emacs-tutorial.html'>A
+  Tutorial Introduction to GNU Emacs</a> (2009)</li>
+ <li><a
+  href='http://www.gnu.org/software/emacs/manual/emacs.html'>The
+  Emacs editor</a>, version 24.5 (2015)</li>
+ <li><a
+  href='http://www.gnu.org/software/emacs/manual/eintr.html'>An
+  Introduction to Programming in Emacs Lisp</a>, version 24.5 (2015)</li>
+</ul>
+<p>
+For all the exercises, record the steps taken to accomplish the given tasks.
+Use intelligent ways of answering the questions. For example, if
+asked to move to the first occurrence of the word "scrumptious", do not
+merely use cursor keys to move the cursor by hand; instead, use the
+builtin search capabilities to find "scrumptious" quickly.
+</p>
+
+<p>
+To start, download a copy of the web page you're looking at into a
+file named <samp>assign1.html</samp>.  You can do this
+with <a href='http://www.gnu.org/software/wget/'>Wget</a>
+or <a href='http://curl.haxx.se/'>curl</a>.
+Use <samp><a href='http://pubs.opengroup.org/onlinepubs/9699919799/utilities/cp.html'>cp</a></samp>
+to make three copies of this file. Call the copies
+<samp>exer1.html</samp>, <samp>exer2.html</samp>, and <samp>exer3.html</samp>.
+</p>
+
+<h3>Exercise 1.1: Moving around in Emacs</h3>
+
+<ol>
+<li>Use Emacs to edit the file <samp>exer1.html</samp>.</li>
+<li>Move the cursor to somewhere in the first line that contains the text "UTF-8".</li>
+<li>Move the cursor to somewhere in the next line that contains the text "Instructions".</li>
+<li>Move the cursor to the next letter of first occurrence of the word "HTML".</li>
+<li>Move the cursor to the first letter of first occurrence of the word "arro&#119;".</li>
+<li>Move the cursor to the end of the current line.</li>
+<li>Move the cursor to the beginning of the current line.</li>
+<li>Move the cursor back to somewhere in the first line of the file.</li>
+<li>Have you been moving the cursor using the arrow keys? If so, repeat the
+above, without using the arrow keys.</li>
+<li>
+Doing the above tasks with the arrow keys takes many keystrokes, or it
+involves holding down keys for a long time. Can you think of a way to
+do it with fewer keystrokes by using some of the commands available in
+Emacs?
+</li>
+<li>When you are done, exit Emacs.</li>
+</ol>
+
+<h3>Exercise 1.2: Deleting text in Emacs</h3>
+
+<ol>
+<li>Use Emacs to edit the file <samp>exer2.html</samp>. The idea is to
+delete its HTML comments; the resulting page should display the same
+text as the original.</li>
+
+<li>Delete the 18th line, which is an HTML comment. <samp>&lt;!-- HTML comments look like this. --&gt;</samp></li>
+<li>Delete the HTML comment containing the text
+"<samp>DELETEME DELETEME DELETEME</samp>".</li>
+<li>Delete the HTML comment containing the text "<samp>http://en.wikipedia.org/wiki/HTML_comment#Comments</samp>".</li>
+<li>There's one more HTML comment; delete that one too.</li>
+</ol>
+
+<p>
+Once again, try to accomplish the tasks using a small number of keystrokes.
+When you are done, save the file and exit back to the command line. You can
+check your work by using a browser to view <samp>exer2.html</samp>. Also,
+check that you haven't deleted something that you want to keep, by using
+the following command:</p>
+
+<pre><samp><a href='http://www.gnu.org/software/diffutils/'>diff</a> -u exer1.html exer2.html &gt;exer2.diff
+</samp></pre>
+
+<p>The output file <samp>exer2.diff</samp> should describe only text
+that you wanted to remove. Don't remove <samp>exer2.diff</samp>;
+you'll need it later.</p>
+
+<h3>Exercise 1.3: Inserting text in Emacs</h3>
+
+<ol>
+<li>Use Emacs to edit the file <samp>exer3.html</samp>.</li>
+
+<li>Change the first two instances of "Assignment 1" to "Assignment 37".</li>
+<li>Change the first instance of "UTF-8" to "US-ASCII".</li>
+<li>Insert a blank line after the first line containing
+"<samp>&lt;ol&gt;</samp>".</li>
+
+<li>When you finish, save the text file and exit Emacs. As before,
+use the <samp>diff</samp> command to check your work.</li>
+</ol>
+
+<h3>Exercise 1.4: Other editing tasks in Emacs</h3>
+
+<p>
+In addition to inserting and deleting text, there are other common tasks
+that you should know, like copy and paste, search and replace, and undo.
+</p>
+
+<ol>
+<li>Execute the command "<samp>cat exer2.html exer2.diff &gt;exer4.html</samp>"
+to create a file <samp>exer4.html</samp> that contains a copy of <samp>exer2.html</samp> followed by a copy of <samp>exer2.diff</samp>.</li>
+<li>Use Emacs to edit the file <samp>exer4.html</samp>.
+The idea is to edit the file so that it looks identical
+to <samp>exer1.html</samp> on a browser, but the file itself is a
+little bit different internally.</li>
+
+<li>Go to the end of the file. Copy the new lines in the last chunk
+of diff output, and paste them into the correct location earlier in the file.</li>
+<li>Repeat the process, until the earlier part of the file is identical
+to what was in the original.</li>
+<li>Delete the last part of the file, which contains the diff output.</li>
+<li>&hellip; except we didn't really want to do that, so undo the deletion.</li>
+
+<li>Turn the diff output into a comment, by surrounding it with
+"<samp>&lt;!--</samp>" and "<samp>--&gt;</samp>".
+
+<li>Now let's try some search and replaces.
+Search the text document for the pattern "<samp>&lt;ol&gt;</samp>".
+How many instances did you find?
+Use the search and
+replace function to replace them all with the initial-caps
+equivalent "<samp>&lt;Ol&gt;</samp>".</li>
+
+<li>Check your work with viewing <samp>exer4.html</samp> with an HTML
+browser, and by running the shell command "<samp>diff -u
+exer1.html exer4.html &gt;exer4.diff</samp>". The only differences
+should be changes from "<samp>&lt;ol&gt;</samp>" to "<samp>&lt;Ol&gt;</samp>",
+and a long HTML comment at the end.</li>
+
+</ol>
+
+<h3>Exercise 1.5: Doing commands in Emacs</h3>
+
+<p>
+Do these tasks all within Emacs. Don't use a shell subcommand
+if you can avoid it.</p>
+
+<ol>
+<li>Create a new directory <samp>junk</samp> that's right under
+your home directory.</li>
+
+<li>In that directory, create a C source file <samp>hello.c</samp>
+that contains the following text. Take care to get the text exactly
+right, with no trailing spaces or empty lines, with the
+initial <samp>#</samp> in the leftmost column of the first line, and
+with all other lines indented to match exactly as shown:
+
+<pre><samp>#include &lt;stdio.h&gt;
+int
+main (void)
+{
+  char n = '\n';
+  char b = '\\';
+  char q = '"';
+  char const *p = "#include &lt;stdio.h&gt;%cint%cmain (void)%c{%c  char n = '%cn';%c  char b = '%c%c';%c  char q = '%c';%c  char const *p = %c%s%c;%c  printf (p, n, n, n, n, b, n, b, b, n, q, n, q, p, q, n, n, n, n);%c  return 0;%c}%c";
+  printf (p, n, n, n, n, b, n, b, b, n, q, n, q, p, q, n, n, n, n);
+  return 0;
+}
+</samp></pre>
+</li>
+
+<li>Compile this file, using the Emacs <samp>M-x compile</samp> command.
+</li>
+
+<li>Run the compiled program, and put its output into a new Emacs
+buffer named <samp>hello-out</samp>.</li>
+
+<li>Copy this buffer's contents directly into the log that you're
+maintaining for this exercise. (You <em>are</em> using Emacs to
+maintain the log, aren't you?)</li>
+
+</ol>
+
+<h3>Exercise 1.6: Running Elisp code</h3>
+
+<ol>
+<li>Visit Emacs's <samp>*scratch*</samp> buffer.</li>
+
+<li>In the buffer, compute a random integer by invoking
+  the <samp>random</samp> function. Use <samp>C-j</samp>
+  (<samp>eval-print-last-sexp</samp>) to invoke
+  the <samp>random</samp> function.</li>
+
+<li>In the buffer, assign three random integers to the global
+  variables <samp>x</samp>, <samp>y</samp> and <samp>z</samp>.  You
+  can start by executing <samp>(setq x (random))</samp>. Again,
+  use <samp>C-j</samp>.</li>
+
+<li>What is the product of the three variables? You can find this out
+  by executing <samp>(* x y z)</samp>. What do you observe about the
+  result?  If the answer seems to be the correct mathematical answer,
+  try again with a different set of random integers.</li>
+
+<li>Try evaluating <samp>(* x y z)</samp> again, but this time with
+  <samp>M-:</samp> (<samp>eval-expression</samp>). What difference do you observe
+  in the output?</li>
+
+<li>Are the random integers truly random in the mathematical sense? If
+  not, what's not random about them?</li>
+</ol>
+
+<h2>Submit</h2>
+
+<!-- You can learn more about HTML comments at
+	<http://en.wikipedia.org/wiki/HTML_comment#Comments>.
+	-->
+
+<p>Submit the following files.</p>
+
+<dl>
+
+<dt><samp>key1.txt</samp></dt><dd>For each homework exercise, the set
+of keystrokes needed to do the exercise. Attempt to use as few
+keystrokes as possible. Do not bother to write down the keystrokes
+needed to start the editor (e.g., "<samp>e m a c s SP e x e r 1 . h t m
+l Enter</samp>") or to type in the complicated C program of Exercise
+1.5. Write down the label of the key for each keystroke, e.g.,
+"<samp>a</samp>", "<samp>A</samp>" (if you type "<samp>a</samp>" while
+holding down the shift key), "<samp>Tab</samp>", "<samp>Enter</samp>",
+"<samp>Esc</samp>". Use "<samp>SP</samp>" for space. Use prefix
+"<samp>C-</samp>" and "<samp>M-</samp>" for control
+and meta characters: e.g., "<samp>C-f</samp>" represents Control-F,
+and "<samp>M-f</samp>" represents Meta-F. Put a space between each pair
+of keystroke representations. For example: "<samp>e m a c s &lt; v i
+Backspace Backspace Backspace &gt; v i</samp>". If you use some key not
+described above, invent your own ASCII name for the key and explain
+what key you mean, but don't put spaces in your key name.</dd>
+
+<dt><samp>ans1.txt</samp></dt><dd>Answers to each lab question, along
+with a very brief description of how you can easily find such the
+answer from a new Ubuntu system, the next time you
+need the answer.</dd>
+
+</dl>
+
+<p>The <samp>.txt</samp> files should be ASCII text files, with no
+carriage returns, and with no more than 80 columns per line except
+when logging program output longer than that. The shell command:</p>
+
+<pre><samp><a href='http://en.wikipedia.org/wiki/AWK'>awk</a> '/\r/ || 80 &lt; length' key1.txt ans1.txt
+</samp></pre>
+
+<p>should output only a small number of log lines<!---->.</p>
+
+<hr>
+<address>
+ &copy; 2005, 2007&ndash;2016
+ <a href='../mail-eggert.html'>Paul Eggert</a>, Steve
+ VanDeBogart, and Lei Zhang.
+ See <a href='../copyright.html'>copying rules</a>.<br />
+
+ $Id: assign1.html,v 1.37 2016/01/03 01:41:41 eggert Exp $
+
+</address>
+
+</body>
+</html>

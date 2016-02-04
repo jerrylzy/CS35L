@@ -1,0 +1,40 @@
+--- exer1.html	2016-01-07 12:11:07.153671000 -0800
++++ exer2.html	2016-01-07 13:21:32.444977000 -0800
+@@ -15,7 +15,7 @@
+ 
+ <h2>Laboratory: Linux and Emacs scavenger hunt</h2>
+ 
+-<!-- diff，在UNIX系統上的一個工具程式，它可以比較兩個檔案之間的不同。通常它被用來比較同一個檔案，在不同版本間的差異。它可以產生一個擴展名為.diff或.patch的檔案，這個檔案可以被另一個工具程式patch來使用。-->
++
+ 
+ <p>Instructions: Use the commands that you learned in class to find
+ answers to these questions. Don't use a search engine like Google, and
+@@ -91,7 +91,7 @@
+ 
+ <h2>Homework: Learning to use Emacs</h2>
+ 
+-<!-- DELETEME DELETEME DELETEME -->
++
+ 
+ <ul>
+  <li>Keith Waclena, <a
+@@ -298,9 +298,7 @@
+ 
+ <h2>Submit</h2>
+ 
+-<!-- You can learn more about HTML comments at
+-	<http://en.wikipedia.org/wiki/HTML_comment#Comments>.
+-	-->
++
+ 
+ <p>Submit the following files.</p>
+ 
+@@ -337,7 +335,7 @@
+ <pre><samp><a href='http://en.wikipedia.org/wiki/AWK'>awk</a> '/\r/ || 80 &lt; length' key1.txt ans1.txt
+ </samp></pre>
+ 
+-<p>should output only a small number of log lines<!---->.</p>
++<p>should output only a small number of log lines.</p>
+ 
+ <hr>
+ <address>

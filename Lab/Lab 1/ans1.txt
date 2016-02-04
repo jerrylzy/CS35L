@@ -1,0 +1,483 @@
+1. 
+command: man -k keywords
+I read through "man man" to get the answer
+
+2. 
+command: which cp
+/usr/local/cs/bin/cp
+
+command: which wc
+/usr/local/cs/bin/wc
+
+I used "man -k location" to find out the command should be "which"
+
+3. 
+I first typed in:
+echo $PATH
+to find out the paths for the environments to be searched by find.
+
+command: find /usr/local/cs/bin /usr/local/bin /bin /usr/bin '?' -executable
+I read through "man man" to get the answer
+
+command: man w
+w: Show who is logged on and what they are doing.
+
+command: man X
+X: a portable, network-transparent window system
+
+4. 
+command: readlink /usr/bin/emacs
+/etc/alternatives/emacs
+
+I used
+man -k symbolic
+to find out the correct command
+
+5.
+g+s: set group id on execution
+o-x: remove the permission to execute for others
+
+I read "man chmod" to get the answer.
+
+6.
+answer: -mtime -20
+
+I used "man find" to find out the answer.
+
+7.
+command:
+find / -type d -mtime -20
+
+I used "man find" to find out the answer.
+
+However, since I am on the Seasnet machine,
+it is not possible to search through the root folder.
+
+So I will print out the results of:
+I am in directory:
+/u/cs/ugrad/zhongyan
+
+find . -type d -mtime -20
+.
+./Desktop
+./Documents
+./Downloads
+./.cache/abrt
+./.emacs.d/auto-save-list
+./cs35L
+./cs35L/folder
+
+8. First I need to find out the location for find:
+command: which find
+/usr/bin/find
+
+command: find /usr/bin -type l
+
+/usr/bin/xzegrep
+/usr/bin/htxelatex
+/usr/bin/mysql_config
+/usr/bin/gpgv
+/usr/bin/lpstat
+/usr/bin/pnmcomp
+/usr/bin/mac2unix
+/usr/bin/texconfig-dialog
+/usr/bin/latex
+/usr/bin/gnatgcc
+/usr/bin/dvired
+/usr/bin/jstack
+/usr/bin/pnmenlarge
+/usr/bin/wsgen
+/usr/bin/apropos
+/usr/bin/mk4ht
+/usr/bin/pstack
+/usr/bin/rmid
+/usr/bin/sgml2xml
+/usr/bin/htcontext
+/usr/bin/wish
+/usr/bin/kpsewhere
+/usr/bin/pgmedge
+/usr/bin/dot2gxl
+/usr/bin/jstat
+/usr/bin/bzless
+/usr/bin/jconsole
+/usr/bin/mailq.postfix
+/usr/bin/kpsetool
+/usr/bin/kpsepath
+/usr/bin/kdesu
+/usr/bin/pmiostat
+/usr/bin/gjs
+/usr/bin/xjc
+/usr/bin/osage
+/usr/bin/db2rtf
+/usr/bin/jps
+/usr/bin/pbmtoicon
+/usr/bin/sgmlnorm
+/usr/bin/flipdiff
+/usr/bin/sfdp
+/usr/bin/lualatex
+/usr/bin/setup
+/usr/bin/allneeded
+/usr/bin/twopi
+/usr/bin/ghc-pkg
+/usr/bin/newaliases.sendmail
+/usr/bin/pamon
+/usr/bin/ebb
+/usr/bin/geqn
+/usr/bin/makeinfo
+/usr/bin/xmltex
+/usr/bin/links
+/usr/bin/bmptoppm
+/usr/bin/javac
+/usr/bin/rmail
+/usr/bin/patchwork
+/usr/bin/ghci
+/usr/bin/httexi
+/usr/bin/fmtutil
+/usr/bin/texconfig
+/usr/bin/gimp
+/usr/bin/rmiregistry
+/usr/bin/jade
+/usr/bin/gtar
+/usr/bin/captoinfo
+/usr/bin/latrace-ctl
+/usr/bin/emacs
+/usr/bin/htmex
+/usr/bin/circo
+/usr/bin/jrunscript
+/usr/bin/pstree.x11
+/usr/bin/gnome-keyring
+/usr/bin/traceroute6
+/usr/bin/lastb
+/usr/bin/pax
+/usr/bin/ghc
+/usr/bin/ghostscript
+/usr/bin/readcd
+/usr/bin/tclsh
+/usr/bin/el4-rpmlint
+/usr/bin/i386
+/usr/bin/rmic
+/usr/bin/flex++
+/usr/bin/newaliases.postfix
+/usr/bin/unpack200
+/usr/bin/lex
+/usr/bin/gpg
+/usr/bin/X
+/usr/bin/cdrecord
+/usr/bin/jdb
+/usr/bin/dvi2fax
+/usr/bin/jsadebugd
+/usr/bin/gmake
+/usr/bin/purgestat
+/usr/bin/texluac
+/usr/bin/ppmtojpeg
+/usr/bin/jcmd
+/usr/bin/runhaskell
+/usr/bin/view
+/usr/bin/native2ascii
+/usr/bin/bzcmp
+/usr/bin/unix2mac
+/usr/bin/tnameserv
+/usr/bin/httex
+/usr/bin/jar
+/usr/bin/orbd
+/usr/bin/servertool
+/usr/bin/jadetex
+/usr/bin/gsoelim
+/usr/bin/open
+/usr/bin/dvilualatex
+/usr/bin/bunzip2
+/usr/bin/mkluatexfontdb
+/usr/bin/idlj
+/usr/bin/systemd-loginctl
+/usr/bin/x86_64
+/usr/bin/reset
+/usr/bin/pmcollectl
+/usr/bin/updmap-sys
+/usr/bin/jhat
+/usr/bin/csh
+/usr/bin/pnmsplit
+/usr/bin/pngtopnm
+/usr/bin/pnmfile
+/usr/bin/updmap
+/usr/bin/serialver
+/usr/bin/gimp-console
+/usr/bin/pnmscale
+/usr/bin/jdeps
+/usr/bin/jstatd
+/usr/bin/gtbl
+/usr/bin/haddock
+/usr/bin/bzcat
+/usr/bin/byacc
+/usr/bin/lpq
+/usr/bin/pgmslice
+/usr/bin/texlua
+/usr/bin/dvipdfm
+/usr/bin/rvim
+/usr/bin/lsdiff
+/usr/bin/jmap
+/usr/bin/extcheck
+/usr/bin/ex
+/usr/bin/pnmarith
+/usr/bin/fdp
+/usr/bin/javah
+/usr/bin/pmatop
+/usr/bin/texhash
+/usr/bin/psfstriptable
+/usr/bin/sh
+/usr/bin/wsimport
+/usr/bin/paplay
+/usr/bin/grepdiff
+/usr/bin/gv2gxl
+/usr/bin/systemd-coredumpctl
+/usr/bin/plistutil
+/usr/bin/rpmquery
+/usr/bin/python
+/usr/bin/parecord
+/usr/bin/desktop-file-edit
+/usr/bin/pgmoil
+/usr/bin/texconfig-sys
+/usr/bin/jjs
+/usr/bin/pnmdepth
+/usr/bin/rpmverify
+/usr/bin/appletviewer
+/usr/bin/thumbpdf
+/usr/bin/nisdomainname
+/usr/bin/extractbb
+/usr/bin/newaliases
+/usr/bin/vimdiff
+/usr/bin/pdfetex
+/usr/bin/runghc
+/usr/bin/texlinks
+/usr/bin/pgmnorm
+/usr/bin/xzcat
+/usr/bin/rnano
+/usr/bin/initex
+/usr/bin/psfaddtable
+/usr/bin/dnsdomainname
+/usr/bin/hsc2hs
+/usr/bin/hoststat
+/usr/bin/combinediff
+/usr/bin/f95
+/usr/bin/mailq
+/usr/bin/hwloc-ls
+/usr/bin/pdfjadetex
+/usr/bin/mkisofs
+/usr/bin/java
+/usr/bin/dvdrecord
+/usr/bin/pnmtotiff
+/usr/bin/pnmtopnm
+/usr/bin/pnmnoraw
+/usr/bin/javap
+/usr/bin/javaws
+/usr/bin/spent
+/usr/bin/etex
+/usr/bin/rview
+/usr/bin/arecord
+/usr/bin/ht
+/usr/bin/nfs4_editfacl
+/usr/bin/pdflatex
+/usr/bin/lprm
+/usr/bin/nail
+/usr/bin/phar
+/usr/bin/xzcmp
+/usr/bin/dviluatex
+/usr/bin/python2-config
+/usr/bin/python2
+/usr/bin/chsh
+/usr/bin/rhn_register
+/usr/bin/pnminterp
+/usr/bin/subscription-manager
+/usr/bin/pnmtofits
+/usr/bin/ksh
+/usr/bin/nc
+/usr/bin/psfgettable
+/usr/bin/el5-rpmlint
+/usr/bin/lp
+/usr/bin/domainname
+/usr/bin/zsoelim
+/usr/bin/kpsexpand
+/usr/bin/jinfo
+/usr/bin/sg
+/usr/bin/makemap
+/usr/bin/pack200
+/usr/bin/icontopbm
+/usr/bin/infotocap
+/usr/bin/slogin
+/usr/bin/parec
+/usr/bin/iptables-xml
+/usr/bin/ppmnorm
+/usr/bin/atq
+/usr/bin/gtroff
+/usr/bin/spam
+/usr/bin/mailq.sendmail
+/usr/bin/neato
+/usr/bin/gemtopbm
+/usr/bin/gneqn
+/usr/bin/keytool
+/usr/bin/cc
+/usr/bin/setup-nsssysinit
+/usr/bin/gnroff
+/usr/bin/linux64
+/usr/bin/javadoc
+/usr/bin/ypdomainname
+/usr/bin/ld
+/usr/bin/ppmquantall
+/usr/bin/nsgmls
+/usr/bin/mock
+/usr/bin/db2pdf
+/usr/bin/bashbug
+/usr/bin/schemagen
+/usr/bin/atrm
+/usr/bin/pnmcut
+/usr/bin/rvi
+/usr/bin/Mail
+/usr/bin/fmtutil-sys
+/usr/bin/htxetex
+/usr/bin/runhaskell-ghc
+/usr/bin/libpng-config
+/usr/bin/linux32
+/usr/bin/db2ps
+/usr/bin/gpic
+/usr/bin/mptopdf
+/usr/bin/simpdftex
+/usr/bin/gxl2dot
+/usr/bin/allec
+/usr/bin/unxz
+/usr/bin/db2dvi
+/usr/bin/xzfgrep
+/usr/bin/mktexfmt
+/usr/bin/jarsigner
+/usr/bin/mail
+/usr/bin/ppmtouil
+/usr/bin/mkhybrid
+/usr/bin/allcm
+/usr/bin/pdfxmltex
+/usr/bin/rksh
+/usr/bin/awk
+/usr/bin/htlatex
+/usr/bin/lpr
+/usr/bin/python-config
+/usr/bin/inimf
+/usr/bin/cancel
+/usr/bin/etags
+
+so there are 287 symbolic links // On lnxsrv09
+
+I got my answer by reading "man find"
+
+9.
+command:
+cd /usr/lib && ls -lt
+
+The file on the bottom without a 'd' in the front is the oldest regular file:
+-rwxr-xr-x   1 root root  414960 Aug  7 13:43 libfreeblpriv3.so
+
+I read "man ls" to know the answer
+
+10.
+locale gets its data from localedef
+
+I used "man locale" to find out that locale prints out environmen variables,
+and I used "man -k locale" to find out that
+ localedef defines locale environment.
+
+Also,
+under /usr/share/locale
+and   /usr/share/share/locale
+
+There are also predefined environment variables.
+locale can also get its data from the above two directories.
+
+I got this by
+find /usr -name locale
+
+11.
+C-h a sort
+
+Buffer-menu-sort              M-x ... RET
+Sort Tabulated List entries by the column at point.
+sort-columns                  M-x ... RET
+Sort lines in region alphabetically by a certain range of columns.
+sort-fields                   M-x ... RET
+Sort lines in region lexicographically by the ARGth field of each
+line.
+sort-lines                    M-x ... RET
+Sort lines in region alphabetically; argument means descending
+order.
+sort-numeric-fields           M-x ... RET
+Sort lines in region numerically by the ARGth field of each line.
+sort-pages                    M-x ... RET
+Sort pages in region alphabetically; argument means descending
+order.
+sort-paragraphs               M-x ... RET
+Sort paragraphs in region alphabetically; argument means descending
+order.
+sort-regexp-fields            M-x ... RET
+Sort the text in the region region lexicographically.
+tabulated-list-col-sort       M-x ... RET
+Sort Tabulated List entries by the column of the mouse click E.
+tabulated-list-sort           M-x ... RET
+Sort Tabulated List entries by the column at point.
+
+12.
+C-M-a
+Move backward to the beginning of a defun.
+
+C-M-b
+Move backward across one balanced expression (sexp).
+
+C-M-c
+Exit from the innermost recursive edit or minibuffer.
+
+C-M-d
+Move forward down one level of parentheses.
+
+C-M-e
+Move forward to next end of defun.
+
+C-M-f
+Move forward across one balanced expression (sexp).
+
+C-M-g
+Does not exist
+
+C-M-h
+Put mark at end of this defun, point at beginning.
+The defun marked is the one that contains point or follows point.
+
+Command:
+C-h k the-keys-I-typed-in
+
+13.
+C-g: cancels current command. For example, if I am seaching something,
+but I want to abort, I type in C-g
+
+I used "C-h k C-g" to find out the answer.
+
+14.
+yank: is bound to C-y, and reinserts ("paste") the last stretch of killed text.
+
+Command:
+C-h f yank
+
+15.
+
+The only difference I noticed is:
+
+for the dired function in emacs,
+it displays the following two directories:
+
+dr-xr-xr-x.   2 root root       77824 Dec 22 13:15 .
+drwxr-xr-x.  16 root root        4096 Dec 22 11:29 ..
+
+while the ls -l command does not display it.
+
+I used comparing tools to get this answer.
+
+Command:
+C-h d Backspace Backspace /usr/bin
+
+Command for ls:
+cd /usr/bin && ls -l
+
+The two "Backspace" key represents the process of deleting the default path "~/"
