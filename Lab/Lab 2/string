@@ -1,0 +1,4 @@
+#!/bin/sh
+
+String='You like that!'
+echo $String #$IFS

@@ -1,0 +1,28 @@
+#!/bin/bash
+
+wget http://web.cs.ucla.edu/classes/winter16/cs35L/assign/assign2.html
+
+cat assign2.html |
+tr -cs 'A-Za-z' '[\n*]' |
+tr '[:upper:]' '[:lower:]' |
+sort -u | comm -23 - words > misEnglish
+
+wc -w misEnglish
+
+cat assign2.html |
+tr -cs "pk\'mnwlhaeiou" '[\n*]' |
+tr '[:upper:]' '[:lower:]' |
+sort -u | comm -23 - hwords > misHaiwaiian
+
+wc -w misHaiwaiian
+
+cat misEnglish |
+tr -cs "pk\'mnwlhaeiou" '[\n*]' |
+sort -u | comm -12 - hwords > misEngHai
+
+cat misHaiwaiian |
+tr -cs 'A-Za-z' '[\n*]' |
+sort -u | comm -12 - words > misHaiEng
+
+
+

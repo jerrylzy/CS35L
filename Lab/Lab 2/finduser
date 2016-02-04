@@ -1,0 +1,4 @@
+#! /bin/sh
+# finduser: see names with 1st argument
+
+who | grep $1

@@ -1,0 +1,79 @@
+#!/bin/bash
+dir=$1
+#RESULT=`ls`
+#let verify=0
+
+#for FILE in RESULT
+#do
+#    if [ -L "$dir/$FILE" ]
+#    then
+#	:
+#    elif [ ! -f "$dir/$FILE" ]
+#    then
+#	:
+#    elif [ ! -r "$dir/$FILE" ]
+#    then
+#	echo "$FILE is not readable"
+#    else
+#	FDARR[$count]="$dir/$FILE"
+#    fi
+#    let verify=verify+1
+#done	
+
+rm *inode*
+rm .test_*
+rm .test_a
+rm .test_b
+rm atesthwords
+rm .test_c
+rm .test_d
+rm btestlab
+rm Auildwords
+rm auildwords
+rm Buildwords
+rm Words
+
+cp hwords .test_a
+cp hwords .test_b
+cp hwords .test_hwords
+cp hwords atesthwords
+cp buildwords Buildwords
+cp buildwords Auildwords
+cp buildwords auildwords
+
+echo "hwords inode number:"
+ls -i .test_a > hwordsinode
+
+cp lab2.log .test_c
+cp lab2.log .test_d
+cp lab2.log .test_lab2
+cp lab2.log btestlab
+
+echo "lab2 inode number:"
+ls -i .test_c > lab2inode
+
+cp words Words
+
+echo "words inode number:"
+ls -i Words > wordsinode
+
+echo "buildwords inode number:"
+ls -i Auildwords > buildwordsinode
+
+./sameln $dir
+
+echo "hwords inode number after:"
+ls -i .test_a > hwordsinode2
+diff -u hwordsinode hwordsinode2
+
+echo "lab2 inode number after:"
+ls -i .test_c > lab2inode2
+diff -u lab2inode lab2inode2
+
+echo "words inode number after:"
+ls -i Words > wordsinode2
+diff -u wordsinode wordsinode2
+
+echo "buildwords inode number after:"
+ls -i Auildwords > buildwordsinode2
+diff -u buildwordsinode buildwordsinode2

@@ -1,0 +1,272 @@
+/*
+ * <Jerry Liu>
+ * 	CS35L Lab 2
+ *
+ */
+
+1. Setting locale:
+export LC_ALL='C'
+
+We set this to make sure we are in standard C locale.
+
+2. Sorting words
+sort -u /usr/share/dict/words > words
+
+We use this command to sort the contents from
+/usr/share/dict/words to the file 'words' in working dictionary.
+
+3. Download page
+wget http://web.cs.ucla.edu/classes/winter16/cs35L/assign/assign2.html
+
+4. Output
+a.
+tr -c 'A-Za-z' '[\n*]' < assign2.html
+
+This outputs things that has A-Z or a-z.
+The lines that does not have those characters become empty lines.
+
+b.
+tr -cs 'A-Za-z' '[\n*]' < assign2.html
+
+instead of a lot of empty lines, this one only displays one empty
+line, which makes us easier to see the output of alphabets.
+
+c.
+tr -cs 'A-Za-z' '[\n*]' < assign2.html | sort
+
+The output of the pages is sorted. We can see multiple instances of a
+word, like:
+
+file
+file
+file
+...
+
+d.
+tr -cs 'A-Za-z' '[\n*]' < assign2.html | sort -u
+
+The output is sorted, and only one instance of a word is displayed.
+
+e.
+tr -cs 'A-Za-z' '[\n*]' < assign2.html | sort -u | comm - words
+
+This command reads input from stdin and compares it with words.
+It outputs:
+column 1: lines unique to the result of the command in part 4.d
+column 2: lines unique to the file 'words'
+column 3: lines that is common to both files
+
+f.
+tr -cs 'A-Za-z' '[\n*]' < assign2.html | sort -u | comm -23 - words
+
+This one outputs lines that is only unique to the result from 4.d
+
+5. Get Haiwaiin web page
+wget http://mauimapp.com/moolelo/hwnwdseng.htm
+
+6. Buildwords Script
+#!/bin/bash
+
+# remove anything before the table and the first english word
+sed '/<!DOCTYPE/,/Adopt<\/td>/d' |
+
+# remove anything after the table
+sed '/<\/table>/,/<\/html>/d' |
+
+# remove english words
+sed '/<tr>/,/<\/td>/d'|
+
+# remove carriage returns
+tr -d '\r\n' |
+
+# translate upper case letters to lower case letters
+tr '[:upper:]' '[:lower:]' |
+
+# replace </td> with new line character (nlc)
+sed 's/<\/td>/\n/g' |
+
+# replace comma with nlc
+sed 's/\,/\n/g' |
+
+# replace ` with '
+sed s/\`/\'/g |
+
+# delete any html stuff
+sed 's/<[^>]*>//g' |
+
+# separate words in a sentence
+sed 's/ /\n/g' |
+
+# delete any left-over spaces
+tr -d '[:blank:]' |
+
+# delete illformed haiwaiian words
+sed '/-/d' |
+
+# remove any misspelled haiwaiin language
+tr -cs "pk\'mnwlhaeiou" '[\n*]' |
+
+# sort the dictionary and remove duplicates
+sort -u |
+
+# remove the empty lines
+sed '/^$/d'
+
+7. Run Script
+a. Make it executable
+chmod +x buildwords
+
+b. Make Haiwaiian Dictionary
+cat hwnwdseng.htm | ./buildwords > hwords
+
+8. Spelling Checking
+a. Misspelled English
+$   cat assign2.html |
+    tr -cs 'A-Za-z' '[\n*]' |
+    tr '[:upper:]' '[:lower:]' |
+    sort -u | comm -23 - words > misEnglish
+
+$   wc -w misEnglish
+    38 misEnglish
+
+So there are 38 misspelled english words
+
+b. Misspelled Haiwaiian
+$   cat assign2.html |
+    tr -cs "pk\'mnwlhaeiou" '[\n*]' |
+    tr '[:upper:]' '[:lower:]' |
+    sort -u | comm -23 - hwords > misHaiwaiian
+
+$   wc -w misHaiwaiian
+    198 misHaiwaiian
+
+So there are 198 misspelled haiwaiian words
+
+c. Misspelled English but not as Haiwaiian
+$   cat misEnglish |
+    tr -cs "pk\'mnwlhaeiou" '[\n*]' |
+    sort -u | comm -12 - hwords > misEngHai
+
+Examples:
+e
+halau
+i
+lau
+po
+wiki
+
+d. Misspelled Haiwaiian but not as English
+$   cat misHaiwaiian |
+    tr -cs 'A-Za-z' '[\n*]' |
+    sort -u | comm -12 - words > misHaiEng
+
+Examples:
+a
+ail
+ain
+ake
+al
+ale
+alen
+all
+amine
+amp
+ample
+an
+aph
+aul
+awk
+e
+ea
+ee
+el
+em
+emp
+en
+ep
+epa
+h
+ha
+han
+hap
+he
+hei
+hell
+hem
+hen
+hi
+hin
+ho
+how
+howe
+ia
+ie
+ile
+imp
+in
+ion
+iou
+k
+keep
+kin
+l
+lan
+le
+lea
+li
+like
+line
+link
+ll
+ln
+lo
+lowe
+m
+mail
+man
+me
+men
+mi
+ml
+mo
+mp
+n
+name
+ne
+nee
+no
+non
+nu
+num
+o
+om
+on
+one
+op
+ope
+open
+owe
+own
+p
+pe
+pell
+people
+plea
+pu
+u
+ui
+ula
+ule
+ume
+ump
+un
+uni
+w
+wa
+wan
+we
+wh
+wha
+who
+wi
+wo

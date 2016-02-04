@@ -1,0 +1,46 @@
+#!/bin/bash
+
+# remove anything before the table
+sed '/<!DOCTYPE/,/<\/font><\/td>/d' |
+
+# remove anything after the table
+sed '/<\/table>/,/<\/html>/d' |
+
+# remove english words
+sed '/<tr>/,/<\/td>/d'|
+
+# remove carriage returns
+tr -d '\r\n' |
+
+# translate upper case letters to lower case letters
+tr '[:upper:]' '[:lower:]' |
+
+# replace </td> with new line character (nlc)
+sed 's/<\/td>/\n/g' |
+
+# replace comma with nlc
+sed 's/\,/\n/g' |
+
+# replace ` with '
+sed s/\`/\'/g |
+
+# delete any html stuff
+sed 's/<[^>]*>//g' |
+
+# separate words in a sentence
+sed 's/ /\n/g' |
+
+# delete any left-over spaces
+tr -d '[:blank:]' |
+
+# transform illformed haiwaiian words
+sed '/-/d' |
+
+# remove any misspelled haiwaiin language
+tr -cs "pk\'mnwlhaeiou<" '[\n*]' |
+
+# sort the dictionary and remove duplicates
+sort -u |
+
+# remove the empty lines
+sed '/^$/d'
