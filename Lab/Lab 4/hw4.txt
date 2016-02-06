@@ -1,0 +1,114 @@
+/*
+ * <Jerry Liu>
+ * CS35L  	Homework 4
+ *
+ */
+
+2. Checkout
+cd diffutils
+git checkout -b 'quote' 'v3.0'
+
+3. Install patches
+patch -p1 < quote-3.0-patch.txt 
+patching file src/cmp.c
+patching file src/diff.c
+patching file src/diff3.c
+patching file src/dir.c
+patching file src/sdiff.c
+patching file src/util.c
+
+The patching is successful.
+
+4 & 5. Compose ChangeLog
+I first just typed emacs, and used (C-x 4 a) to open the ChangeLog.
+
+Then I just copied appropriate entries the changelog from git-log.txt.
+
+Note: I could have used:
+emacs src/cmp.c
+emacs src/diff.c
+...
+etc
+
+and compose changelog with (C-x 4 a) for each one.
+
+But I realized that I don't need to.
+The spec says "by adapting the change log from the original patch" anyway.
+
+6. Commit Changes
+git commit -aF ChangeLog
+I used the changelog I composed in file ChangeLog to commit.
+
+7. Generating patches
+git format-patch -1 --stdout > formatted-patch.txt
+
+I used the above command to generate the formatted-patch.txt
+
+8. Verification of Partner's Patch
+
+Partner's name: Yu Wang
+Partner's UID:	704409906
+
+I renamed her patch to "wy-formatted-patch.txt"
+
+First I created a new 3.0 branch called "partner".
+git checkout -b 'partner' 'v3.0'
+
+Then I used:
+git am wy-formatted-patch.txt
+Applying: 2016-01-29 Yu Wang <wangyu@lnxsrv09.seas.ucla.edu>
+
+And the result is successful.
+
+Then I repeated the part from step 13 of the lab part.
+./boostrap
+patch -p0 < gets.diff
+./configure
+make
+
+Then I ran:
+./src/diff . -
+and
+./src/diff --help
+
+No ` found. So it works.
+
+Also,
+Rujun Yao (I don't know his email nor UID) asked me for the patch,
+but he didn't give me his patch. So I can't verify his patch.
+
+9. Verification of ChangeLog
+make distdir
+
+I used this command to verify that ChangeLog works.
+
+After running for a while, it creates a new folder: diffutils-3.0.1-d400
+Then I went into that folder and checked the ChangeLog:
+
+The first entry is the entry I created:
+
+2016-01-29  Zhongyang Liu  <zhongyan@lnxsrv09.seas.ucla.edu>
+
+        2016-01-29  Zhongyang Liu  <zhongyan@lnxsrv09.seas.ucla.edu>
+                maint: quote 'like this' or "like this", not `like this'
+		...
+
+So it works.
+
+10. gitk
+Since ~/eggert/src/gnu/emacs doesn't exist,
+I cloned the one from savannah's main repo.
+
+git clone git://git.savannah.gnu.org/emacs.git gitrepo
+
+into a new folder called "gitrepo"
+
+cd gitrepo
+gitk
+
+Then I used gitk to check
+
+The newest merge point that is no newer than 2015-01-25 is:
+
+Merge branch 'master' into xwidget 2015-01-25 12:19:27
+

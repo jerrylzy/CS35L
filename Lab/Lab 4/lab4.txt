@@ -1,0 +1,229 @@
+/*
+ * <Jerry Liu>
+ * CS35L  	Lab 4
+ *
+ */
+
+1. Get a copy of the Diffutils repository
+
+git clone ~eggert/src/gnu/diffutils
+
+2. Get a log of changes
+git log > git-log.txt
+
+3. Generate a list of tags
+git tag > git-tags.txt
+
+4. Find the commit and generate a patch
+Find out the hash:
+emacs git-log.txt
+Then I used C-s to search for the key word "maint: quote 'like this'..."
+
+git format-patch -1 62ca21c8c1a5aa3488589dcb191a4ef04ae9ed4f \
+--stdout > quote-patch.txt
+
+Then I used this to generate the patch and put it into quote_patch.txt
+
+5. Check out version 3.0
+git checkout -b 'my3.0' 'v3.0'
+
+I checked out version 3.0 and made a new branch called my3.0
+
+6. Patch
+patch -p1 < quote-patch.txt
+
+Problems encountered:
+
+a. No such file exists:
+HACKING
+doc/diffutils.texi
+man/help2man
+
+b. Conflicts:
+README: at 9, 60
+README-hacking: at 19
+cfg.mk: at 29
+src/diff.c: at 876, 906, 942
+src/diff3.c: at 433
+
+7. Overview
+git status
+
+# On branch my3.0
+# Changes not staged for commit:
+#   (use "git add <file>..." to update what will be committed)
+#   (use "git checkout -- <file>..." to discard changes in working directory)
+#
+#	modified:   NEWS
+#	modified:   README
+#	modified:   TODO
+#	modified:   doc/diagmeet.note
+#	modified:   ms/config.bat
+#	modified:   ms/config.site
+#	modified:   po/en.po
+#	modified:   src/analyze.c
+#	modified:   src/cmp.c
+#	modified:   src/context.c
+#	modified:   src/diff.c
+#	modified:   src/diff.h
+#	modified:   src/diff3.c
+#	modified:   src/dir.c
+#	modified:   src/ifdef.c
+#	modified:   src/io.c
+#	modified:   src/sdiff.c
+#	modified:   src/side.c
+#	modified:   src/system.h
+#	modified:   src/util.c
+#	modified:   tests/help-version
+#
+# Untracked files:
+#   (use "git add <file>..." to include in what will be committed)
+#
+#	NEWS.orig
+#	README-hacking.orig
+#	README-hacking.rej
+#	README.orig
+#	README.rej
+#	cfg.mk.orig
+#	cfg.mk.rej
+#	git-log.txt
+#	git-tags.txt
+#	ms/config.site.orig
+#	quote-patch.txt
+#	src/cmp.c.orig
+#	src/context.c.orig
+#	src/diff.c.orig
+#	src/diff.c.rej
+#	src/diff.h.orig
+#	src/diff3.c.orig
+#	src/diff3.c.rej
+#	src/dir.c.orig
+#	src/sdiff.c.orig
+#	src/system.h.orig
+#	src/util.c.orig
+#	tests/help-version.orig
+no changes added to commit (use "git add" and/or "git commit -a")
+
+8. Learn to use Emacs functions
+I learned that I can use vc-revert to revert changes.
+
+9. Reverting changes
+I used emacs to open NEWS, README, TODO, doc/diagmeet.note, ms/config.bat,
+ms/config.site, po/en.po, src/diff.h, src/system.h, tests/help-version
+
+I used vc-revert (C-x v u) to discard changes to those files.
+
+
+For .c files, I discarded changes to comments.
+I used vc-diff (C-x v =) function to check changes.
+
+I used M-g g to go to the line numbers specified in vc-diff.
+I used M-% to replace the first ' with `
+
+
+line number specified in vc-diff for discarded changes:
+analyze.c: all
+cmp.c: 36, 364, 377
+context.c: all changes, I used vc-revert.
+diff.c: 40, 57 (3 lines there), 92
+diff3.c: 35, 159, 1475
+dir.c: 87, 125, 234
+ifdef.c: all
+io.c: all
+sdiff.c: 35, 92, 747
+side.c: all
+util.c: 27, 121, 146, 190, 241, 270, 650
+
+10. Manually Apply Changes of rejected patches
+
+Reason: The merge failed because line numbers and strings didn't match.
+diff.c: I manually searched those sentences and manually changed ` to '
+diff3.c: same as above
+
+11. Remove untracked files
+I used
+find . -type f -name '*.orig' -delete
+and
+find . -type f -name '*.rej' -delete
+
+to delete unwanted files
+
+12. Patch for v3.0
+git status gives us:
+
+#	modified:   src/cmp.c
+#	modified:   src/diff.c
+#	modified:   src/diff3.c
+#	modified:   src/dir.c
+#	modified:   src/sdiff.c
+#	modified:   src/util.c
+
+It's half a dozen of files
+
+Patch:
+git diff > quote-3.0-patch.txt
+
+13. Build the resulting modified version
+I first run:
+./bootstrap
+
+I patched the additional patch since I'm using lnxsrv09.
+
+/*
+ * Detail:
+ * I first changed the path in the first line
+ * from old to lib and saved it to gets.diff.
+ * Then I used patch -p0 < gets.diff
+ *
+ */
+
+Then:
+./configure
+make
+
+Then:
+./src/diff . -
+and
+./src/diff --help
+
+Both give the right quote mark.
+
+14. Sanity Test
+cd ..
+mkdir diffutils-3.0
+mkdir diffutils-3.0-patch
+
+git clone ~eggert/src/gnu/diffutils diffutils-3.0-orig
+Cloned code into folder diffutils-3.0-orig
+
+cd diffutils-3.0-orig
+
+git checkout 'v3.0' -b 'o3.0'
+Checkout the original v3.0 code.
+
+cp ./src/*.c ../diffutils-3.0/
+Copy the original source codes to diffutils-3.0
+
+cd ..
+
+cp ./diffutils/src/*.c ./diffutils-3.0-patch/
+Copy the patched source codes to diffutils-3.0-patch
+
+./diffutils/src/diff -pru diffutils-3.0 diffutils-3.0-patch >quote-3.0-test.txt
+I used the patched diff to compare
+
+Compare two patches:
+diff -u quote-3.0-test.txt diffutils/quote-3.0-patch.txt
+
+There seem to be a lot of differences, but the don't differ in actual contents.
+The differences are mainly from paths for files and hashes.
+
+In quote-3.0-test.txt, the diff part for diff3.c is ahead of diff.c,
+while in quote-3.0-patch.txt, it comes after diff.c.
+
+When I clip them to be in the same position (I created a new file for this)
+Every difference is innocuous.
+
+
+
+

@@ -1,0 +1,25 @@
+1. upper half:
+a. left window
+This window shows a hierarchical tree of commits and
+their corresponding relationships with branches.
+
+It also gives information about branches.
+Below are the SHA 1 value of the selected commit.
+
+b. mid window
+The name and emails show the corresponding authors' information about
+commits in the same row in the left window.
+
+c. right window
+This window shows the corresponding date of commits in the same row.
+
+2. lower half:
+a. left window
+This window shows the changelog of the commits,
+usually with the actual file changes in diff format.
+
+b. right window
+Here displays the files impacted by the selected commit
+
+
+

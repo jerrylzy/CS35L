@@ -1,0 +1,1225 @@
+From 62ca21c8c1a5aa3488589dcb191a4ef04ae9ed4f Mon Sep 17 00:00:00 2001
+From: Paul Eggert <eggert@cs.ucla.edu>
+Date: Wed, 25 Jan 2012 23:46:16 -0800
+Subject: [PATCH] maint: quote 'like this' or "like this", not `like this'
+
+This is in response to a recent change in the GNU coding standards,
+which now suggest quoting 'like this' or "like this", instead of
+`like this' or ``like this''.
+* HACKING, NEWS, README, README-hacking, TODO, doc/diagmeet.note:
+* doc/diffutils.texi, ms/config.bat, ms/config.site:
+* src/analyze.c, src/cmp.c, src/context.c, src/diff.c:
+* src/diff.h, src/diff3.c, src/dir.c, src/ifdef.c, src/io.c:
+* src/sdiff.c, src/side.c, src/system.h, src/util.c:
+* tests/help-version:
+Quote 'like this' or "like this" in commentary.
+* cfg.mk (old_NEWS_hash): Adjust to reflect new NEWS quoting.
+* man/help2man: Update to 1.40.4 version, with quoting fixed as above.
+* po/en.po: Remove translation involving `, as it's no longer needed.
+* src/cmp.c (try_help, specify_ignore_initial, usage, main):
+* src/diff.c (main, try_help, option_help_msgid, specify_value)
+(compare_files):
+* src/diff3.c (main, try_help, option_help_msgid, usage)
+(read_diff):
+* src/dir.c (compare_names):
+* src/sdiff.c (try_help, usage, check_child_status, main):
+* src/util.c (finish_output):
+* tests/help-version:
+Quote 'like this' in output.
+---
+ HACKING            |  4 ++--
+ NEWS               | 26 +++++++++++++-------------
+ README             | 10 +++++-----
+ README-hacking     |  2 +-
+ TODO               |  2 +-
+ cfg.mk             |  2 +-
+ doc/diagmeet.note  |  2 +-
+ doc/diffutils.texi |  2 +-
+ man/help2man       | 33 +++++++++++++++++++--------------
+ ms/config.bat      |  2 +-
+ ms/config.site     |  2 +-
+ po/en.po           | 14 +++-----------
+ src/analyze.c      |  6 +++---
+ src/cmp.c          | 20 ++++++++++----------
+ src/context.c      | 10 +++++-----
+ src/diff.c         | 40 ++++++++++++++++++++--------------------
+ src/diff.h         |  8 ++++----
+ src/diff3.c        | 26 +++++++++++++-------------
+ src/dir.c          |  8 ++++----
+ src/ifdef.c        |  2 +-
+ src/io.c           |  4 ++--
+ src/sdiff.c        | 22 +++++++++++-----------
+ src/side.c         |  6 +++---
+ src/system.h       |  6 +++---
+ src/util.c         | 24 ++++++++++++------------
+ tests/help-version | 12 ++++++------
+ 26 files changed, 146 insertions(+), 149 deletions(-)
+
+diff --git a/HACKING b/HACKING
+index 3a99833..522e0b5 100644
+--- a/HACKING
++++ b/HACKING
+@@ -587,5 +587,5 @@ Permission is granted to copy, distribute and/or modify this document
+ under the terms of the GNU Free Documentation License, Version 1.3 or
+ any later version published by the Free Software Foundation; with no
+ Invariant Sections, with no Front-Cover Texts, and with no Back-Cover
+-Texts.  A copy of the license is included in the ``GNU Free
+-Documentation License'' file as part of this distribution.
++Texts.  A copy of the license is included in the "GNU Free
++Documentation License" file as part of this distribution.
+diff --git a/NEWS b/NEWS
+index 8105f1d..808c603 100644
+--- a/NEWS
++++ b/NEWS
+@@ -58,7 +58,7 @@ GNU diffutils NEWS                                    -*- outline -*-
+ 
+   New diff option --suppress-blank-empty.
+ 
+-  Bring back support for `diff -NUM', where NUM is a number,
++  Bring back support for 'diff -NUM', where NUM is a number,
+   even when conforming to POSIX 1003.1-2001.  This change reverts to
+   the behavior of GNU diff 2.7 and earlier.  This is a change only
+   when conforming to POSIX 1003.1-2001; there is no effect when
+@@ -94,7 +94,7 @@ User-visible changes in version 2.8.6:
+   that 'patch' creates to indicate nonexistent backups) are now
+   treated as nonexistent when they are in the 'backup' file position.
+ 
+-* If multiple SKIP values are given to cmp, e.g., `cmp -i 10 -i 20',
++* If multiple SKIP values are given to cmp, e.g., 'cmp -i 10 -i 20',
+   cmp now uses the maximal value instead of the last one.
+ 
+ * diff now omits the ".000000000" on hosts that do not support
+@@ -134,7 +134,7 @@ User-visible changes in version 2.8:
+ * cmp and diff now conform to POSIX 1003.1-2001 (IEEE Std 1003.1-2001)
+   if the underlying system conforms to POSIX and if the _POSIX2_VERSION
+   environment variable is set to 200112.  Conformance removes support
+-  for `diff -NUM', where NUM is a number.  Use -C NUM or -U NUM instead.
++  for 'diff -NUM', where NUM is a number.  Use -C NUM or -U NUM instead.
+ * cmp now supports trailing operands SKIP1 and SKIP2, like BSD cmp.
+ * cmp -i or --ignore-initial now accepts SKIP1:SKIP2 option value.
+ * New cmp option: -n or --bytes.
+@@ -168,13 +168,13 @@ User-visible changes in version 2.8:
+   category if possible, instead of using native byte comparison.
+ * Recursive diffs now detect and report directory loops.
+ * Diff printf specs can now use the "0" and "'" flags.
+-* The new sdiff interactive command `ed' precedes each version with a header.
++* The new sdiff interactive command 'ed' precedes each version with a header.
+ * On 64-bit hosts, files larger than 2 GB can be compared.
+ * Some internationalization support has been added, but multibyte locales
+   are still not completely supported yet.
+ * Some diagnostics have been reworded slightly for consistency.
+-  Also, `diff -D FOO' now outputs `/* ! FOO */' instead of `/* not FOO */'.
+-* The `patch' part of the manual now describes `patch' version 2.5.4.
++  Also, 'diff -D FOO' now outputs '/* ! FOO */' instead of '/* not FOO */'.
++* The 'patch' part of the manual now describes 'patch' version 2.5.4.
+ * Man pages are now distributed and installed.
+ * There is support for DJGPP; see the 'ms' subdirectory and the files
+   m4/dos.m4 and */setmode.*.
+@@ -212,7 +212,7 @@ User-visible changes in version 2.4:
+       A printf spec followed by one of the following letters
+       causes the integer corresponding to that letter to be
+       printed according to the printf specification.
+-      E.g. `%5df' prints the number of the first line in the
++      E.g. '%5df' prints the number of the first line in the
+       group in the old file using the "%5d" format.
+ 	e: line number just before the group in old file; equals f - 1
+ 	f: first line number in group in the old file
+@@ -225,9 +225,9 @@ User-visible changes in version 2.4:
+       constant or a single letter interpreted as above.  T and E are
+       arbitrary format strings.  This format spec is equivalent to T if
+       A's value equals B's; otherwise it is equivalent to E.  For
+-      example, `%(N=0?no:%dN) line%(N=1?:s)' is equivalent to `no lines'
++      example, '%(N=0?no:%dN) line%(N=1?:s)' is equivalent to 'no lines'
+       if N (the number of lines in the group in the new file) is 0,
+-      to `1 line' if N is 1, and to `%dN lines' otherwise.
++      to '1 line' if N is 1, and to '%dN lines' otherwise.
+   %c'C'
+       where C is a single character, stands for the character C.  C may not
+       be a backslash or an apostrophe.  E.g. %c':' stands for a colon.
+@@ -237,7 +237,7 @@ User-visible changes in version 2.4:
+ * New diff line format specifications:
+   <PRINTF_SPEC>n
+       The line number, printed with <PRINTF_SPEC>.
+-      E.g. `%5dn' prints the line number with a "%5d" format.
++      E.g. '%5dn' prints the line number with a "%5d" format.
+   %c'C'
+   %c'\O'
+       The character C, or with octal code O, as above.
+@@ -249,14 +249,14 @@ User-visible changes in version 2.4:
+ * cmp and diff now conform to POSIX 1003.2-1992 (ISO/IEC 9945-2:1993)
+   if the underlying system conforms to POSIX:
+   - Some messages' wordings are changed in minor ways.
+-  - ``White space'' is now whatever C's `isspace' says it is.
+-  - When comparing directories, if `diff' finds a file that is not a regular
++  - "White space" is now whatever C's 'isspace' says it is.
++  - When comparing directories, if 'diff' finds a file that is not a regular
+     file or a directory, it reports the file's type instead of diffing it.
+     (As usual, it follows symbolic links first.)
+   - When signaled, sdiff exits with the signal's status, not with status 2.
+ * Now portable to hosts where int, long, pointer, etc. are not all the same
+   size.
+-* `cmp - -' now works like `diff - -'.
++* 'cmp - -' now works like 'diff - -'.
+ 
+ 
+ User-visible changes in version 2.3:
+diff --git a/README b/README
+index b249c56..ddab36e 100644
+--- a/README
++++ b/README
+@@ -9,8 +9,8 @@ Please see the file COPYING for copying conditions.
+ Please see the file doc/version.texi for version information.
+ 
+ Please see the file doc/diffutils.texi (or doc/diffutils.info) for
+-documentation that can be printed with TeX, or read with the `info'
+-program or with Emacs's `M-x info'.  Brief man pages are in man/*,
++documentation that can be printed with TeX, or read with the 'info'
++program or with Emacs's 'M-x info'.  Brief man pages are in man/*,
+ but they are no substitute for the documentation.
+ 
+ Please see the file ABOUT-NLS for notes about translations.
+@@ -21,7 +21,7 @@ command "./configure --help" lists the supported --enable and --with
+ options.
+ 
+ If you have a problem with internationalization, you might be able to
+-work around it as described in ABOUT-NLS by invoking `./configure
++work around it as described in ABOUT-NLS by invoking './configure
+ --disable-nls'.  Many of the problems arise from dynamic linking
+ issues on non-GNU platforms (e.g. with the iconv library).  Such
+ problems tend to be shared by other GNU applications on these
+@@ -60,5 +60,5 @@ Permission is granted to copy, distribute and/or modify this document
+ under the terms of the GNU Free Documentation License, Version 1.3 or
+ any later version published by the Free Software Foundation; with no
+ Invariant Sections, with no Front-Cover Texts, and with no Back-Cover
+-Texts.  A copy of the license is included in the ``GNU Free
+-Documentation License'' file as part of this distribution.
++Texts.  A copy of the license is included in the "GNU Free
++Documentation License" file as part of this distribution.
+diff --git a/README-hacking b/README-hacking
+index b5dc6f8..e276592 100644
+--- a/README-hacking
++++ b/README-hacking
+@@ -19,7 +19,7 @@ Valgrind <http://valgrind.org/> is also highly recommended, if
+ Valgrind supports your architecture.
+ 
+ While building from a just-cloned source tree may require installing a
+-few prerequisites, later, a plain `git pull && make' should be sufficient.
++few prerequisites, later, a plain 'git pull && make' should be sufficient.
+ 
+ * First GIT checkout
+ 
+diff --git a/TODO b/TODO
+index f8dc34a..5132de8 100644
+--- a/TODO
++++ b/TODO
+@@ -6,4 +6,4 @@ http://www.pkix.net/~chuck/sdiff2.diff
+ Propagate stderr from subprocess so that diff3 does
+ a better job of explaining _why_:
+   > $ diff3 /bin/sh /bin/false /bin/mv
+-  > diff3: subsidiary program `diff' failed (exit status 2)
++  > diff3: subsidiary program 'diff' failed (exit status 2)
+diff --git a/cfg.mk b/cfg.mk
+index f4d58db..72fddc0 100644
+--- a/cfg.mk
++++ b/cfg.mk
+@@ -29,7 +29,7 @@ bootstrap-tools = autoconf,automake,gnulib
+ # Now that we have better tests, make this the default.
+ export VERBOSE = yes
+ 
+-old_NEWS_hash = becaac48768c0024859d5837010c801e
++old_NEWS_hash = 7d70c18e90495732e671b3c94da01651
+ 
+ # Tell maint.mk's syntax-check rules that diff gets config.h directly or
+ # via diff.h or system.h.
+diff --git a/doc/diagmeet.note b/doc/diagmeet.note
+index 9ffd175..2d30d21 100644
+--- a/doc/diagmeet.note
++++ b/doc/diagmeet.note
+@@ -1,5 +1,5 @@
+ Here is a comparison matrix which shows a case in which
+-it is possible for the forward and backward scan in `diag'
++it is possible for the forward and backward scan in 'diag'
+ to meet along a nonzero length of diagonal simultaneous
+ (so that bdiag[d] and fdiag[d] are not equal)
+ even though there is no snake on that diagonal at the meeting point.
+diff --git a/doc/diffutils.texi b/doc/diffutils.texi
+index 58b140c..00403df 100644
+--- a/doc/diffutils.texi
++++ b/doc/diffutils.texi
+@@ -3190,7 +3190,7 @@ characters.
+ @c locale.
+ @c @item locale
+ @c @c Use @t instead of @samp to avoid duplicate quoting in some output styles.
+-@c Like @samp{clocale}, but quote @t{`like this'} instead of @t{"like
++@c Like @samp{clocale}, but quote @t{'like this'} instead of @t{"like
+ @c this"} in the default C locale.  This looks nicer on many displays.
+ @end table
+ 
+diff --git a/man/help2man b/man/help2man
+index f9983f7..8bc961c 100755
+--- a/man/help2man
++++ b/man/help2man
+@@ -1,7 +1,8 @@
+ #!/usr/bin/perl -w
+ 
+ # Generate a short man page from --help and --version output.
+-# Copyright (C) 1997-2005, 2009-2012 Free Software Foundation, Inc.
++# Copyright (C) 1997, 1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2009, 2010,
++# 2011 Free Software Foundation, Inc.
+ 
+ # This program is free software; you can redistribute it and/or modify
+ # it under the terms of the GNU General Public License as published by
+@@ -27,7 +28,7 @@ use Text::Tabs qw(expand);
+ use POSIX qw(strftime setlocale LC_ALL);
+ 
+ my $this_program = 'help2man';
+-my $this_version = '1.39.2';
++my $this_version = '1.40.4';
+ 
+ sub _ { $_[0] }
+ sub configure_locale
+@@ -55,7 +56,7 @@ Written by Brendan O'Dea <bod@debian.org>
+ EOT
+ 
+ my $help_info = enc_user sprintf _(<<'EOT'), $this_program, $this_program;
+-`%s' generates a man page out of `--help' and `--version' output.
++'%s' generates a man page out of '--help' and '--version' output.
+ 
+ Usage: %s [OPTION]... EXECUTABLE
+ 
+@@ -64,16 +65,16 @@ Usage: %s [OPTION]... EXECUTABLE
+  -m, --manual=TEXT       name of manual (User Commands, ...)
+  -S, --source=TEXT       source of program (FSF, Debian, ...)
+  -L, --locale=STRING     select locale (default "C")
+- -i, --include=FILE      include material from `FILE'
+- -I, --opt-include=FILE  include material from `FILE' if it exists
+- -o, --output=FILE       send output to `FILE'
++ -i, --include=FILE      include material from 'FILE'
++ -I, --opt-include=FILE  include material from 'FILE' if it exists
++ -o, --output=FILE       send output to 'FILE'
+  -p, --info-page=TEXT    name of Texinfo manual
+  -N, --no-info           suppress pointer to Texinfo manual
+- -l, --libtool           exclude the `lt-' from the program name
++ -l, --libtool           exclude the 'lt-' from the program name
+      --help              print this help, then exit
+      --version           print version number, then exit
+ 
+-EXECUTABLE should accept `--help' and `--version' options and produce output on
++EXECUTABLE should accept '--help' and '--version' options and produce output on
+ stdout although alternatives may be specified using:
+ 
+  -h, --help-option=STRING     help option string
+@@ -137,7 +138,7 @@ while (@opt_include)
+     my ($inc, $required) = @{shift @opt_include};
+ 
+     next unless -f $inc or $required;
+-    kark N_("%s: can't open `%s' (%s)"), $this_program, $inc, $!
++    kark N_("%s: can't open '%s' (%s)"), $this_program, $inc, $!
+ 	unless open INC, $inc;
+ 
+     my $key;
+@@ -198,7 +199,7 @@ while (@opt_include)
+ 
+     close INC;
+ 
+-    kark N_("%s: no valid information found in `%s'"), $this_program, $inc
++    kark N_("%s: no valid information found in '%s'"), $this_program, $inc
+ 	unless $key;
+ }
+ 
+@@ -214,7 +215,11 @@ sub get_option_value;
+ my $help_text   = get_option_value $ARGV[0], $help_option;
+ $version_text ||= get_option_value $ARGV[0], $version_option;
+ 
+-my $date = strftime "%B %Y", localtime;
++# Translators: the following message is a strftime(3) format string, which in
++# the English version expands to the month as a word and the full year.  It
++# is used on the footer of the generated manual pages.  If in doubt, you may
++# just use %x as the value (which should be the full locale-specific date).
++my $date = enc strftime _("%B %Y"), localtime;
+ (my $program = $ARGV[0]) =~ s!.*/!!;
+ my $package = $program;
+ my $version;
+@@ -261,7 +266,7 @@ else
+ 
+ $program =~ s!.*/!!;
+ 
+-# No info for `info' itself.
++# No info for 'info' itself.
+ $opt_no_info = 1 if $program eq 'info';
+ 
+ # Translators: "NAME", "SYNOPSIS" and other one or two word strings in all
+@@ -637,9 +642,9 @@ sub get_option_value
+ 
+     unless ($value)
+     {
+-	my $err = N_("%s: can't get `%s' info from %s%s");
++	my $err = N_("%s: can't get '%s' info from %s%s");
+ 	my $extra = $discard_stderr
+-	    ? "\n" . N_("Try `--no-discard-stderr' if option outputs to stderr")
++	    ? "\n" . N_("Try '--no-discard-stderr' if option outputs to stderr")
+ 	    : '';
+ 
+ 	kark $err, $this_program, $opt, $prog, $extra;
+diff --git a/ms/config.bat b/ms/config.bat
+index 44ef13b..57d5f3f 100644
+--- a/ms/config.bat
++++ b/ms/config.bat
+@@ -134,7 +134,7 @@ if not errorlevel 1 mv -f %XSRC%/m4/Makefile.am.in %XSRC%/m4/Makefile.am-in
+ 
+ Rem This is required because DOS/Windows are case-insensitive
+ Rem to file names, and "make install" will do nothing if Make
+-Rem finds a file called `install'.
++Rem finds a file called 'install'.
+ if exist INSTALL ren INSTALL INSTALL.txt
+ 
+ Rem Set HOME to a sane default so configure stops complaining.
+diff --git a/ms/config.site b/ms/config.site
+index 31f9aff..c863616 100644
+--- a/ms/config.site
++++ b/ms/config.site
+@@ -73,6 +73,6 @@ MAKEINFO=${MAKEINFO='makeinfo'}
+ # Force the test for 'ln -s' to report 'cp -pf'.
+ ac_cv_prog_LN_S='cp -pf'
+ 
+-# We have `fork', but it always fails.  Don't trust Autoconf to be
++# We have 'fork', but it always fails.  Don't trust Autoconf to be
+ # smart enough to detect that...
+ ac_cv_func_fork=no
+diff --git a/po/en.po b/po/en.po
+index c95e389..ad59232 100644
+--- a/po/en.po
++++ b/po/en.po
+@@ -4,23 +4,15 @@
+ #
+ msgid ""
+ msgstr ""
+-"Project-Id-Version: GNU diffutils 2.8.3\n"
++"Project-Id-Version: GNU diffutils 3.2\n"
+ "POT-Creation-Date: 2002-06-16 23:44-0700\n"
+-"PO-Revision-Date: 2002-06-17 00:01-0700\n"
+-"Last-Translator: Paul Eggert <eggert@twinsun.com>\n"
++"PO-Revision-Date: 2012-01-25 23:11-0700\n"
++"Last-Translator: Paul Eggert <eggert@cs.ucla.edu>\n"
+ "Language-Team: English <en@translate.freefriends.org>\n"
+ "MIME-Version: 1.0\n"
+ "Content-Type: text/plain; charset=ISO-8859-1\n"
+ "Content-Transfer-Encoding: 8bit\n"
+ 
+-# POSIX requires the word "illegal" in the POSIX locale, but the error
+-# is not really against the law.  This is not the POSIX locale, so fix
+-# the wording.
+-#: lib/getopt.c:800
+-#, c-format
+-msgid "%s: illegal option -- %c\n"
+-msgstr "%s: unrecognized option `-%c'\n"
+-
+ #. TRANSLATORS: Please translate "(C)" to the C-in-a-circle symbol
+ #. (U+00A9, COPYRIGHT SIGN) if possible, as this has some minor
+ #. technical advantages in international copyright law.  If the
+diff --git a/src/analyze.c b/src/analyze.c
+index 124ded5..0e61a82 100644
+--- a/src/analyze.c
++++ b/src/analyze.c
+@@ -38,7 +38,7 @@
+ 
+    A line which is discarded will not be considered by the actual
+    comparison algorithm; it will be as if that line were not in the file.
+-   The file's `realindexes' table maps virtual line numbers
++   The file's 'realindexes' table maps virtual line numbers
+    (which don't count the discarded lines) into real line numbers;
+    this is how the actual comparison algorithm produces results
+    that are comprehensible when the discarded lines are counted.
+@@ -251,7 +251,7 @@ discard_confusing_lines (struct file_data filevec[])
+    We do something when a run of changed lines include a
+    line at one end and have an excluded, identical line at the other.
+    We are free to choose which identical line is included.
+-   `compareseq' usually chooses the one at the beginning,
++   'compareseq' usually chooses the one at the beginning,
+    but usually it is cleaner to consider the following identical line
+    to be the "change".  */
+ 
+@@ -595,7 +595,7 @@ diff_2_files (struct comparison *cmp)
+       shift_boundaries (cmp->file);
+ 
+       /* Get the results of comparison in the form of a chain
+-	 of `struct change's -- an edit script.  */
++	 of 'struct change's -- an edit script.  */
+ 
+       if (output_style == OUTPUT_ED)
+ 	script = build_reverse_script (cmp->file);
+diff --git a/src/cmp.c b/src/cmp.c
+index 53ae791..1387ec1 100644
+--- a/src/cmp.c
++++ b/src/cmp.c
+@@ -36,7 +36,7 @@
+ #include <binary-io.h>
+ #include <xstrtol.h>
+ 
+-/* The official name of this program (e.g., no `g' prefix).  */
++/* The official name of this program (e.g., no 'g' prefix).  */
+ #define PROGRAM_NAME "cmp"
+ 
+ #define AUTHORS \
+@@ -115,7 +115,7 @@ try_help (char const *reason_msgid, char const *operand)
+   if (reason_msgid)
+     error (0, 0, _(reason_msgid), operand);
+   error (EXIT_TROUBLE, 0,
+-	 _("Try `%s --help' for more information."), program_name);
++	 _("Try '%s --help' for more information."), program_name);
+   abort ();
+ }
+ 
+@@ -134,7 +134,7 @@ specify_ignore_initial (int f, char **argptr, char delimiter)
+   if (! (e == LONGINT_OK
+ 	 || (e == LONGINT_INVALID_SUFFIX_CHAR && **argptr == delimiter))
+       || TYPE_MAXIMUM (off_t) < val)
+-    try_help ("invalid --ignore-initial value `%s'", arg);
++    try_help ("invalid --ignore-initial value '%s'", arg);
+   if (ignore_initial[f] < val)
+     ignore_initial[f] = val;
+ }
+@@ -191,7 +191,7 @@ Mandatory arguments to long options are mandatory for short options too.\n\
+ 	  _("SKIP values may be followed by the following multiplicative suffixes:\n\
+ kB 1000, K 1024, MB 1,000,000, M 1,048,576,\n\
+ GB 1,000,000,000, G 1,073,741,824, and so on for T, P, E, Z, Y."),
+-	  _("If a FILE is `-' or missing, read standard input."),
++	  _("If a FILE is '-' or missing, read standard input."),
+ 	  _("Exit status is 0 if inputs are the same, 1 if different, 2 if trouble."));
+   emit_bug_reporting_address ();
+ }
+@@ -237,7 +237,7 @@ main (int argc, char **argv)
+ 	{
+ 	  uintmax_t n;
+ 	  if (xstrtoumax (optarg, 0, 0, &n, valid_suffixes) != LONGINT_OK)
+-	    try_help ("invalid --bytes value `%s'", optarg);
++	    try_help ("invalid --bytes value '%s'", optarg);
+ 	  if (n < bytes)
+ 	    bytes = n;
+ 	}
+@@ -263,7 +263,7 @@ main (int argc, char **argv)
+       }
+ 
+   if (optind == argc)
+-    try_help ("missing operand after `%s'", argv[argc - 1]);
++    try_help ("missing operand after '%s'", argv[argc - 1]);
+ 
+   file[0] = argv[optind++];
+   file[1] = optind < argc ? argv[optind++] : "-";
+@@ -275,7 +275,7 @@ main (int argc, char **argv)
+     }
+ 
+   if (optind < argc)
+-    try_help ("extra operand `%s'", argv[optind]);
++    try_help ("extra operand '%s'", argv[optind]);
+ 
+   for (f = 0; f < 2; f++)
+     {
+@@ -370,8 +370,8 @@ main (int argc, char **argv)
+   return exit_status;
+ }
+ 
+-/* Compare the two files already open on `file_desc[0]' and `file_desc[1]',
+-   using `buffer[0]' and `buffer[1]'.
++/* Compare the two files already open on 'file_desc[0]' and 'file_desc[1]',
++   using 'buffer[0]' and 'buffer[1]'.
+    Return EXIT_SUCCESS if identical, EXIT_FAILURE if different,
+    >1 if error.  */
+ 
+@@ -383,7 +383,7 @@ cmp (void)
+   uintmax_t remaining = bytes;	/* Remaining number of bytes to compare.  */
+   size_t read0, read1;		/* Number of bytes read from each file. */
+   size_t first_diff;		/* Offset (0...) in buffers of 1st diff. */
+-  size_t smaller;		/* The lesser of `read0' and `read1'. */
++  size_t smaller;		/* The lesser of 'read0' and 'read1'. */
+   word *buffer0 = buffer[0];
+   word *buffer1 = buffer[1];
+   char *buf0 = (char *) buffer0;
+diff --git a/src/context.c b/src/context.c
+index bd1c981..b73d5c3 100644
+--- a/src/context.c
++++ b/src/context.c
+@@ -158,7 +158,7 @@ print_context_function (FILE *out, char const *function)
+ 
+ /* Print a portion of an edit script in context format.
+    HUNK is the beginning of the portion to be printed.
+-   The end is marked by a `link' that has been nulled out.
++   The end is marked by a 'link' that has been nulled out.
+ 
+    Prints out lines from both files, and precedes each
+    line with the appropriate flag-character.  */
+@@ -288,7 +288,7 @@ print_unidiff_number_range (struct file_data const *file, lin a, lin b)
+ 
+ /* Print a portion of an edit script in unidiff format.
+    HUNK is the beginning of the portion to be printed.
+-   The end is marked by a `link' that has been nulled out.
++   The end is marked by a 'link' that has been nulled out.
+ 
+    Prints out lines from both files, and precedes each
+    line with the appropriate flag-character.  */
+@@ -392,7 +392,7 @@ pr_unidiff_hunk (struct change *hunk)
+ 
+ /* Scan a (forward-ordered) edit script for the first place that more than
+    2*CONTEXT unchanged lines appear, and return a pointer
+-   to the `struct change' for the last change before those lines.  */
++   to the 'struct change' for the last change before those lines.  */
+ 
+ static struct change * _GL_ATTRIBUTE_PURE
+ find_hunk (struct change *start)
+@@ -430,7 +430,7 @@ find_hunk (struct change *start)
+   return prev;
+ }
+ 
+-/* Set the `ignore' flag properly in each change in SCRIPT.
++/* Set the 'ignore' flag properly in each change in SCRIPT.
+    It should be 1 if all the lines inserted or deleted in that change
+    are ignorable lines.  */
+ 
+@@ -458,7 +458,7 @@ mark_ignorable (struct change *script)
+ }
+ 
+ /* Find the last function-header line in LINBUF prior to line number LINENUM.
+-   This is a line containing a match for the regexp in `function_regexp'.
++   This is a line containing a match for the regexp in 'function_regexp'.
+    Return the address of the text, or NULL if no function-header is found.  */
+ 
+ static char const *
+diff --git a/src/diff.c b/src/diff.c
+index 0911131..972d84d 100644
+--- a/src/diff.c
++++ b/src/diff.c
+@@ -42,7 +42,7 @@
+ #include <xreadlink.h>
+ #include <binary-io.h>
+ 
+-/* The official name of this program (e.g., no `g' prefix).  */
++/* The official name of this program (e.g., no 'g' prefix).  */
+ #define PROGRAM_NAME "diff"
+ 
+ #define AUTHORS \
+@@ -59,9 +59,9 @@
+ struct regexp_list
+ {
+   char *regexps;	/* chars representing disjunction of the regexps */
+-  size_t len;		/* chars used in `regexps' */
+-  size_t size;		/* size malloc'ed for `regexps'; 0 if not malloc'ed */
+-  bool multiple_regexps;/* Does `regexps' represent a disjunction?  */
++  size_t len;		/* chars used in 'regexps' */
++  size_t size;		/* size malloc'ed for 'regexps'; 0 if not malloc'ed */
++  bool multiple_regexps;/* Does 'regexps' represent a disjunction?  */
+   struct re_pattern_buffer *buf;
+ };
+ 
+@@ -94,13 +94,13 @@ enum { binary = true };
+ 
+ /* When comparing directories, if a file appears only in one
+    directory, treat it as present but empty in the other (-N).
+-   Then `patch' would create the file with appropriate contents.  */
++   Then 'patch' would create the file with appropriate contents.  */
+ static bool new_file;
+ 
+ /* When comparing directories, if a file appears only in the second
+    directory of the two, treat it as present but empty in the other
+    (--unidirectional-new-file).
+-   Then `patch' would create the file with appropriate contents.  */
++   Then 'patch' would create the file with appropriate contents.  */
+ static bool unidirectional_new_file;
+ 
+ /* Report files compared that are the same (-s).
+@@ -340,7 +340,7 @@ main (int argc, char **argv)
+ 	      {
+ 		numval = strtoumax (optarg, &numend, 10);
+ 		if (*numend)
+-		  try_help ("invalid context length `%s'", optarg);
++		  try_help ("invalid context length '%s'", optarg);
+ 		if (LIN_MAX < numval)
+ 		  numval = LIN_MAX;
+ 	      }
+@@ -515,7 +515,7 @@ main (int argc, char **argv)
+ 	case 'W':
+ 	  numval = strtoumax (optarg, &numend, 10);
+ 	  if (! (0 < numval && numval <= SIZE_MAX) || *numend)
+-	    try_help ("invalid width `%s'", optarg);
++	    try_help ("invalid width '%s'", optarg);
+ 	  if (width != numval)
+ 	    {
+ 	      if (width)
+@@ -544,7 +544,7 @@ main (int argc, char **argv)
+ 	case HORIZON_LINES_OPTION:
+ 	  numval = strtoumax (optarg, &numend, 10);
+ 	  if (*numend)
+-	    try_help ("invalid horizon length `%s'", optarg);
++	    try_help ("invalid horizon length '%s'", optarg);
+ 	  horizon_lines = MAX (horizon_lines, MIN (numval, LIN_MAX));
+ 	  break;
+ 
+@@ -599,7 +599,7 @@ main (int argc, char **argv)
+ 	case TABSIZE_OPTION:
+ 	  numval = strtoumax (optarg, &numend, 10);
+ 	  if (! (0 < numval && numval <= SIZE_MAX) || *numend)
+-	    try_help ("invalid tabsize `%s'", optarg);
++	    try_help ("invalid tabsize '%s'", optarg);
+ 	  if (tabsize != numval)
+ 	    {
+ 	      if (tabsize)
+@@ -758,9 +758,9 @@ main (int argc, char **argv)
+ 	  if (argc - optind != 2)
+ 	    {
+ 	      if (argc - optind < 2)
+-		try_help ("missing operand after `%s'", argv[argc - 1]);
++		try_help ("missing operand after '%s'", argv[argc - 1]);
+ 	      else
+-		try_help ("extra operand `%s'", argv[optind + 2]);
++		try_help ("extra operand '%s'", argv[optind + 2]);
+ 	    }
+ 
+ 	  exit_status = compare_files (NULL, argv[optind], argv[optind + 1]);
+@@ -840,7 +840,7 @@ try_help (char const *reason_msgid, char const *operand)
+ {
+   if (reason_msgid)
+     error (0, 0, _(reason_msgid), operand);
+-  error (EXIT_TROUBLE, 0, _("Try `%s --help' for more information."),
++  error (EXIT_TROUBLE, 0, _("Try '%s --help' for more information."),
+ 	 program_name);
+   abort ();
+ }
+@@ -876,7 +876,7 @@ static char const * const option_help_msgid[] = {
+   N_("-T, --initial-tab             make tabs line up by prepending a tab"),
+   N_("    --tabsize=NUM             tab stops every NUM (default 8) print columns"),
+   N_("    --suppress-blank-empty    suppress space or tab before empty output lines"),
+-  N_("-l, --paginate                pass output through `pr' to paginate it"),
++  N_("-l, --paginate                pass output through 'pr' to paginate it"),
+   "",
+   N_("-r, --recursive                 recursively compare any subdirectories found"),
+   N_("    --no-dereference            don't follow symbolic links"),
+@@ -906,13 +906,13 @@ static char const * const option_help_msgid[] = {
+   N_("    --binary                    read and write data in binary mode"),
+ #endif
+   "",
+-  N_("-D, --ifdef=NAME                output merged file with `#ifdef NAME' diffs"),
++  N_("-D, --ifdef=NAME                output merged file with '#ifdef NAME' diffs"),
+   N_("    --GTYPE-group-format=GFMT   format GTYPE input groups with GFMT"),
+   N_("    --line-format=LFMT          format all input lines with LFMT"),
+   N_("    --LTYPE-line-format=LFMT    format LTYPE input lines with LFMT"),
+   N_("  These format options provide fine-grained control over the output\n"
+      "    of diff, generalizing -D/--ifdef."),
+-  N_("  LTYPE is `old', `new', or `unchanged'.  GTYPE is LTYPE or `changed'."),
++  N_("  LTYPE is 'old', 'new', or 'unchanged'.  GTYPE is LTYPE or 'changed'."),
+   N_("  GFMT (only) may contain:\n\
+     %<  lines from FILE1\n\
+     %>  lines from FILE2\n\
+@@ -942,9 +942,9 @@ static char const * const option_help_msgid[] = {
+   N_("    --help               display this help and exit"),
+   N_("-v, --version            output version information and exit"),
+   "",
+-  N_("FILES are `FILE1 FILE2' or `DIR1 DIR2' or `DIR FILE...' or `FILE... DIR'."),
++  N_("FILES are 'FILE1 FILE2' or 'DIR1 DIR2' or 'DIR FILE...' or 'FILE... DIR'."),
+   N_("If --from-file or --to-file is given, there are no restrictions on FILE(s)."),
+-  N_("If a FILE is `-', read standard input."),
++  N_("If a FILE is '-', read standard input."),
+   N_("Exit status is 0 if inputs are the same, 1 if different, 2 if trouble."),
+   0
+ };
+@@ -989,7 +989,7 @@ specify_value (char const **var, char const *value, char const *option)
+ {
+   if (*var && ! STREQ (*var, value))
+     {
+-      error (0, 0, _("conflicting %s option value `%s'"), option, value);
++      error (0, 0, _("conflicting %s option value '%s'"), option, value);
+       try_help (NULL, NULL);
+     }
+   *var = value;
+@@ -1191,7 +1191,7 @@ compare_files (struct comparison const *parent,
+ 	= find_dir_file_pathname (dir, last_component (fnm));
+ 
+       if (STREQ (fnm, "-"))
+-	fatal ("cannot compare `-' to a directory");
++	fatal ("cannot compare '-' to a directory");
+ 
+       if ((no_dereference_symlinks
+ 	   ? lstat (filename, &cmp.file[dir_arg].stat)
+diff --git a/src/diff.h b/src/diff.h
+index 05029a3..4b6595c 100644
+--- a/src/diff.h
++++ b/src/diff.h
+@@ -61,7 +61,7 @@ enum output_style
+   /* Output the differences in a unified context diff format (-u).  */
+   OUTPUT_UNIFIED,
+ 
+-  /* Output the differences as commands suitable for `ed' (-e).  */
++  /* Output the differences as commands suitable for 'ed' (-e).  */
+   OUTPUT_ED,
+ 
+   /* Output the diff as a forward ed script (-f).  */
+@@ -139,7 +139,7 @@ XTERN bool ignore_file_name_case;
+    (--no-dereference).  */
+ XTERN bool no_dereference_symlinks;
+ 
+-/* File labels for `-c' output headers (--label).  */
++/* File labels for '-c' output headers (--label).  */
+ XTERN char *file_label[2];
+ 
+ /* Regexp to identify function-header lines (-F).  */
+@@ -215,8 +215,8 @@ XTERN bool minimal;
+ /* The strftime format to use for time strings.  */
+ XTERN char const *time_format;
+ 
+-/* The result of comparison is an "edit script": a chain of `struct change'.
+-   Each `struct change' represents one place where some lines are deleted
++/* The result of comparison is an "edit script": a chain of 'struct change'.
++   Each 'struct change' represents one place where some lines are deleted
+    and some are inserted.
+ 
+    LINE0 and LINE1 are the first affected lines in the two files (origin 0).
+diff --git a/src/diff3.c b/src/diff3.c
+index 7d8a9a5..3b01071 100644
+--- a/src/diff3.c
++++ b/src/diff3.c
+@@ -34,7 +34,7 @@
+ #include <xalloc.h>
+ #include <xfreopen.h>
+ 
+-/* The official name of this program (e.g., no `g' prefix).  */
++/* The official name of this program (e.g., no 'g' prefix).  */
+ #define PROGRAM_NAME "diff3"
+ 
+ #define AUTHORS \
+@@ -158,7 +158,7 @@ static bool overlap_only;
+ /* If nonzero, show information for DIFF_2ND diffs.  */
+ static bool show_2nd;
+ 
+-/* If nonzero, include `:wq' at the end of the script
++/* If nonzero, include ':wq' at the end of the script
+    to write out the file being edited.   */
+ static bool finalwrite;
+ 
+@@ -315,9 +315,9 @@ main (int argc, char **argv)
+   if (argc - optind != 3)
+     {
+       if (argc - optind < 3)
+-	try_help ("missing operand after `%s'", argv[argc - 1]);
++	try_help ("missing operand after '%s'", argv[argc - 1]);
+       else
+-	try_help ("extra operand `%s'", argv[optind + 3]);
++	try_help ("extra operand '%s'", argv[optind + 3]);
+     }
+ 
+   file = &argv[optind];
+@@ -350,7 +350,7 @@ main (int argc, char **argv)
+ 	 file instead.  */
+       common = 3 - common;
+       if (STREQ (file[0], "-") || STREQ (file[common], "-"))
+-	fatal ("`-' specified for more than one input file");
++	fatal ("'-' specified for more than one input file");
+     }
+ 
+   mapping[0] = 0;
+@@ -411,7 +411,7 @@ try_help (char const *reason_msgid, char const *operand)
+   if (reason_msgid)
+     error (0, 0, _(reason_msgid), operand);
+   error (EXIT_TROUBLE, 0,
+-	 _("Try `%s --help' for more information."), program_name);
++	 _("Try '%s --help' for more information."), program_name);
+   abort ();
+ }
+ 
+@@ -433,7 +433,7 @@ static char const * const option_help_msgid[] = {
+   N_("-3, --easy-only             like -e, but incorporate only nonoverlapping changes"),
+   N_("-x, --overlap-only          like -e, but incorporate only overlapping changes"),
+   N_("-X                          like -x, but bracket conflicts"),
+-  N_("-i                          append `w' and `q' commands to ed scripts"),
++  N_("-i                          append 'w' and 'q' commands to ed scripts"),
+   "",
+   N_("-m, --merge                 output actual merged file, according to\n"
+      "                                -A if no other options are given"),
+@@ -478,7 +478,7 @@ Finally, the -m (--merge) option causes diff3 to do the merge internally\n\
+ and output the actual merged file.  For unusual input, this is more\n\
+ robust than using ed.\n"), stdout);
+   printf ("\n%s\n%s\n",
+-	  _("If a FILE is `-', read standard input."),
++	  _("If a FILE is '-', read standard input."),
+ 	  _("Exit status is 0 if successful, 1 if conflicts, 2 if trouble."));
+   emit_bug_reporting_address ();
+ }
+@@ -1293,12 +1293,12 @@ read_diff (char const *filea,
+   if (EXIT_TROUBLE <= status)
+     error (EXIT_TROUBLE, werrno,
+ 	   _(status == 126
+-	     ? "subsidiary program `%s' could not be invoked"
++	     ? "subsidiary program '%s' could not be invoked"
+ 	     : status == 127
+-	     ? "subsidiary program `%s' not found"
++	     ? "subsidiary program '%s' not found"
+ 	     : status == INT_MAX
+-	     ? "subsidiary program `%s' failed"
+-	     : "subsidiary program `%s' failed (exit status %d)"),
++	     ? "subsidiary program '%s' failed"
++	     : "subsidiary program '%s' failed (exit status %d)"),
+ 	   diff_program, status);
+ 
+   return diff_result + total;
+@@ -1493,7 +1493,7 @@ undotlines (FILE *outputfile, bool leading_dot, long int start, lin num)
+    around the problems involved with changing line numbers in an ed
+    script.
+ 
+-   As in `output_diff3', the variable MAPPING maps from file number
++   As in 'output_diff3', the variable MAPPING maps from file number
+    according to the argument list to file number according to the diff
+    passed.  All files listed below are in terms of the argument list.
+    REV_MAPPING is the inverse of MAPPING.
+diff --git a/src/dir.c b/src/dir.c
+index 2fbaf4b..57134c7 100644
+--- a/src/dir.c
++++ b/src/dir.c
+@@ -85,7 +85,7 @@ dir_read (struct file_data const *dir, struct dirdata *dirdata)
+       dirdata->data = data = xmalloc (data_alloc);
+ 
+       /* Read the directory entries, and insert the subfiles
+-	 into the `data' table.  */
++	 into the 'data' table.  */
+ 
+       while ((errno = 0, (next = readdir (reading)) != 0))
+ 	{
+@@ -126,7 +126,7 @@ dir_read (struct file_data const *dir, struct dirdata *dirdata)
+ #endif
+     }
+ 
+-  /* Create the `names' table from the `data' table.  */
++  /* Create the 'names' table from the 'data' table.  */
+   if (PTRDIFF_MAX / sizeof *names - 1 <= nnames)
+     xalloc_die ();
+   dirdata->names = names = xmalloc ((nnames + 1) * sizeof *names);
+@@ -155,7 +155,7 @@ compare_names (char const *name1, char const *name2)
+ 	r = strcoll (name1, name2);
+       if (errno)
+ 	{
+-	  error (0, errno, _("cannot compare file names `%s' and `%s'"),
++	  error (0, errno, _("cannot compare file names '%s' and '%s'"),
+ 		 name1, name2);
+ 	  longjmp (failed_locale_specific_sorting, 1);
+ 	}
+@@ -235,7 +235,7 @@ diff_dirs (struct comparison const *cmp,
+ 	qsort (names[i], dirdata[i].nnames, sizeof *dirdata[i].names,
+ 	       compare_names_for_qsort);
+ 
+-      /* If `-S name' was given, and this is the topmost level of comparison,
++      /* If '-S name' was given, and this is the topmost level of comparison,
+ 	 ignore all file names less than the specified starting name.  */
+ 
+       if (starting_file && ! cmp->parent)
+diff --git a/src/ifdef.c b/src/ifdef.c
+index 7251085..94f170b 100644
+--- a/src/ifdef.c
++++ b/src/ifdef.c
+@@ -132,7 +132,7 @@ format_group (register FILE *out, char const *format, char endchar,
+ 	    break;
+ 
+ 	  case '(':
+-	    /* Print if-then-else format e.g. `%(n=1?thenpart:elsepart)'.  */
++	    /* Print if-then-else format e.g. '%(n=1?thenpart:elsepart)'.  */
+ 	    {
+ 	      int i;
+ 	      uintmax_t value[2];
+diff --git a/src/io.c b/src/io.c
+index 722cdf0..5a631a5 100644
+--- a/src/io.c
++++ b/src/io.c
+@@ -57,10 +57,10 @@ static size_t nbuckets;
+    The number of an equivalence class is its index in this array.  */
+ static struct equivclass *equivs;
+ 
+-/* Index of first free element in the array `equivs'.  */
++/* Index of first free element in the array 'equivs'.  */
+ static lin equivs_index;
+ 
+-/* Number of elements allocated in the array `equivs'.  */
++/* Number of elements allocated in the array 'equivs'.  */
+ static lin equivs_alloc;
+ 
+ /* Read a block of data into a file buffer, checking for EOF and error.  */
+diff --git a/src/sdiff.c b/src/sdiff.c
+index a77b36b..e1bb117 100644
+--- a/src/sdiff.c
++++ b/src/sdiff.c
+@@ -35,7 +35,7 @@
+ #include <version-etc.h>
+ #include <xalloc.h>
+ 
+-/* The official name of this program (e.g., no `g' prefix).  */
++/* The official name of this program (e.g., no 'g' prefix).  */
+ #define PROGRAM_NAME "sdiff"
+ 
+ #define AUTHORS \
+@@ -91,7 +91,7 @@ static int const sigs[] = {
+ };
+ 
+ #if HAVE_SIGACTION
+-  /* Prefer `sigaction' if available, since `signal' can lose signals.  */
++  /* Prefer 'sigaction' if available, since 'signal' can lose signals.  */
+   static struct sigaction initial_action[NUM_SIGS];
+ # define initial_handler(i) (initial_action[i].sa_handler)
+   static void signal_handler (int, void (*) (int));
+@@ -152,7 +152,7 @@ try_help (char const *reason_msgid, char const *operand)
+ {
+   if (reason_msgid)
+     error (0, 0, _(reason_msgid), operand);
+-  error (EXIT_TROUBLE, 0, _("Try `%s --help' for more information."),
++  error (EXIT_TROUBLE, 0, _("Try '%s --help' for more information."),
+ 	 program_name);
+   abort ();
+ }
+@@ -213,7 +213,7 @@ Mandatory arguments to long options are mandatory for short options too.\n\
+     else
+       putchar ('\n');
+   printf ("\n%s\n%s\n",
+-	  _("If a FILE is `-', read standard input."),
++	  _("If a FILE is '-', read standard input."),
+ 	  _("Exit status is 0 if inputs are the same, 1 if different, 2 if trouble."));
+   emit_bug_reporting_address ();
+ }
+@@ -269,12 +269,12 @@ check_child_status (int werrno, int wstatus, int max_ok_status,
+     {
+       error (0, werrno,
+ 	     _(status == 126
+-	       ? "subsidiary program `%s' could not be invoked"
++	       ? "subsidiary program '%s' could not be invoked"
+ 	       : status == 127
+-	       ? "subsidiary program `%s' not found"
++	       ? "subsidiary program '%s' not found"
+ 	       : status == INT_MAX
+-	       ? "subsidiary program `%s' failed"
+-	       : "subsidiary program `%s' failed (exit status %d)"),
++	       ? "subsidiary program '%s' failed"
++	       : "subsidiary program '%s' failed (exit status %d)"),
+ 	     subsidiary_program, status);
+       exiterr ();
+     }
+@@ -559,9 +559,9 @@ main (int argc, char *argv[])
+   if (argc - optind != 2)
+     {
+       if (argc - optind < 2)
+-	try_help ("missing operand after `%s'", argv[argc - 1]);
++	try_help ("missing operand after '%s'", argv[argc - 1]);
+       else
+-	try_help ("extra operand `%s'", argv[optind + 2]);
++	try_help ("extra operand '%s'", argv[optind + 2]);
+     }
+ 
+   if (! output)
+@@ -706,7 +706,7 @@ main (int argc, char *argv[])
+ 	exit (WEXITSTATUS (wstatus));
+       }
+     }
+-  return EXIT_SUCCESS;			/* Fool `-Wall'.  */
++  return EXIT_SUCCESS;			/* Fool '-Wall'.  */
+ }
+ 
+ static void
+diff --git a/src/side.c b/src/side.c
+index 19958b4..076b898 100644
+--- a/src/side.c
++++ b/src/side.c
+@@ -292,7 +292,7 @@ print_sdiff_hunk (struct change *hunk)
+       fprintf (outfile, "c%ld,%ld\n", len0, len1);
+     }
+ 
+-  /* Print ``xxx  |  xxx '' lines */
++  /* Print "xxx  |  xxx " lines.  */
+   if (changes == CHANGED)
+     {
+       for (i = first0, j = first1;  i <= last0 && j <= last1;  i++, j++)
+@@ -302,7 +302,7 @@ print_sdiff_hunk (struct change *hunk)
+       next1 = first1 = j;
+     }
+ 
+-  /* Print ``     >  xxx '' lines */
++  /* Print "     >  xxx " lines.  */
+   if (changes & NEW)
+     {
+       for (j = first1; j <= last1; ++j)
+@@ -310,7 +310,7 @@ print_sdiff_hunk (struct change *hunk)
+       next1 = j;
+     }
+ 
+-  /* Print ``xxx  <     '' lines */
++  /* Print "xxx  <     " lines.  */
+   if (changes & OLD)
+     {
+       for (i = first0; i <= last0; ++i)
+diff --git a/src/system.h b/src/system.h
+index 9919d68..2767b57 100644
+--- a/src/system.h
++++ b/src/system.h
+@@ -20,14 +20,14 @@
+ 
+ #include <config.h>
+ 
+-/* Use this to suppress gcc's `...may be used before initialized' warnings. */
++/* Use this to suppress gcc's "...may be used before initialized" warnings. */
+ #ifdef lint
+ # define IF_LINT(Code) Code
+ #else
+ # define IF_LINT(Code) /* empty */
+ #endif
+ 
+-/* Define `__attribute__' and `volatile' first
++/* Define '__attribute__' and 'volatile' first
+    so that they're used consistently in all system includes.  */
+ #if __GNUC__ < 2 || (__GNUC__ == 2 && __GNUC_MINOR__ < 6) || __STRICT_ANSI__
+ # define __attribute__(x)
+@@ -99,7 +99,7 @@ int strcasecmp (char const *, char const *);
+    - It's typically faster.
+    POSIX 1003.1-2001 says that only '0' through '9' are digits.
+    Prefer ISDIGIT to isdigit unless it's important to use the locale's
+-   definition of `digit' even when the host does not conform to POSIX.  */
++   definition of 'digit' even when the host does not conform to POSIX.  */
+ #define ISDIGIT(c) ((unsigned int) (c) - '0' <= 9)
+ 
+ #include <errno.h>
+diff --git a/src/util.c b/src/util.c
+index 16638a3..2b0bbbf 100644
+--- a/src/util.c
++++ b/src/util.c
+@@ -27,7 +27,7 @@
+ char const pr_program[] = PR_PROGRAM;
+ 
+ /* Queue up one-line messages to be printed at the end,
+-   when -l is specified.  Each message is recorded with a `struct msg'.  */
++   when -l is specified.  Each message is recorded with a 'struct msg'.  */
+ 
+ struct msg
+ {
+@@ -121,7 +121,7 @@ message5 (char const *format_msgid, char const *arg1, char const *arg2,
+     }
+ }
+ 
+-/* Output all the messages that were saved up by calls to `message'.  */
++/* Output all the messages that were saved up by calls to 'message'.  */
+ 
+ void
+ print_message_queue (void)
+@@ -146,8 +146,8 @@ print_message_queue (void)
+    to set up OUTFILE, the stdio stream for the output to go to.
+ 
+    Usually, OUTFILE is just stdout.  But when -l was specified
+-   we fork off a `pr' and make OUTFILE a pipe to it.
+-   `pr' then outputs to our stdout.  */
++   we fork off a 'pr' and make OUTFILE a pipe to it.
++   'pr' then outputs to our stdout.  */
+ 
+ static char const *current_name0;
+ static char const *current_name1;
+@@ -190,7 +190,7 @@ begin_output (void)
+       if (fflush (stdout) != 0)
+ 	pfatal_with_name (_("write failed"));
+ 
+-      /* Make OUTFILE a pipe to a subsidiary `pr'.  */
++      /* Make OUTFILE a pipe to a subsidiary 'pr'.  */
+       {
+ #if HAVE_WORKING_FORK
+ 	int pipes[2];
+@@ -241,7 +241,7 @@ begin_output (void)
+   else
+     {
+ 
+-      /* If -l was not specified, output the diff straight to `stdout'.  */
++      /* If -l was not specified, output the diff straight to 'stdout'.  */
+ 
+       outfile = stdout;
+ 
+@@ -270,7 +270,7 @@ begin_output (void)
+ }
+ 
+ /* Call after the end of output of diffs for one file.
+-   Close OUTFILE and get rid of the `pr' subfork.  */
++   Close OUTFILE and get rid of the 'pr' subfork.  */
+ 
+ void
+ finish_output (void)
+@@ -298,12 +298,12 @@ finish_output (void)
+       if (status)
+ 	error (EXIT_TROUBLE, werrno,
+ 	       _(status == 126
+-		 ? "subsidiary program `%s' could not be invoked"
++		 ? "subsidiary program '%s' could not be invoked"
+ 		 : status == 127
+-		 ? "subsidiary program `%s' not found"
++		 ? "subsidiary program '%s' not found"
+ 		 : status == INT_MAX
+-		 ? "subsidiary program `%s' failed"
+-		 : "subsidiary program `%s' failed (exit status %d)"),
++		 ? "subsidiary program '%s' failed"
++		 : "subsidiary program '%s' failed (exit status %d)"),
+ 	       pr_program, status);
+     }
+ 
+@@ -677,7 +677,7 @@ print_number_range (char sepchar, struct file_data *file, lin a, lin b)
+ 
+ /* Look at a hunk of edit script and report the range of lines in each file
+    that it applies to.  HUNK is the start of the hunk, which is a chain
+-   of `struct change'.  The first and last line numbers of file 0 are stored in
++   of 'struct change'.  The first and last line numbers of file 0 are stored in
+    *FIRST0 and *LAST0, and likewise for file 1 in *FIRST1 and *LAST1.
+    Note that these are internal line numbers that count from 0.
+ 
+diff --git a/tests/help-version b/tests/help-version
+index 8eb313a..bc9edce 100755
+--- a/tests/help-version
++++ b/tests/help-version
+@@ -74,7 +74,7 @@ test "x$v" = "x$VERSION" \
+ for lang in C fr da; do
+   for i in $built_programs; do
+ 
+-    # Skip `test'; it doesn't accept --help or --version.
++    # Skip 'test'; it doesn't accept --help or --version.
+     test $i = test && continue;
+ 
+     # false fails even when invoked with --help or --version.
+@@ -84,7 +84,7 @@ for lang in C fr da; do
+       continue
+     fi
+ 
+-    # The just-built install executable is always named `ginstall'.
++    # The just-built install executable is always named 'ginstall'.
+     test $i = install && i=ginstall
+ 
+     # Make sure they exit successfully, under normal conditions.
+@@ -95,7 +95,7 @@ for lang in C fr da; do
+     grep "$PACKAGE_BUGREPORT" h-$i > /dev/null || fail=1
+     rm -f h-$i
+ 
+-    # Make sure they fail upon `disk full' error.
++    # Make sure they fail upon 'disk full' error.
+     if test -w /dev/full && test -c /dev/full; then
+       env $i --help    >/dev/full 2>/dev/null && fail=1
+       env $i --version >/dev/full 2>/dev/null && fail=1
+@@ -107,7 +107,7 @@ for lang in C fr da; do
+         : # ok
+       else
+         fail=1
+-        echo "*** $i: bad exit status \`$status' (expected $expected)," 1>&2
++        echo "*** $i: bad exit status '$status' (expected $expected)," 1>&2
+         echo "  with --help or --version output redirected to /dev/full" 1>&2
+       fi
+     fi
+@@ -139,7 +139,7 @@ chown_setup () { args=--version; }
+ mkfifo_setup () { args=--version; }
+ mknod_setup () { args=--version; }
+ # Punt on uptime, since it fails (e.g., failing to get boot time)
+-# on some systems, and we shouldn't let that stop `make check'.
++# on some systems, and we shouldn't let that stop 'make check'.
+ uptime_setup () { args=--version; }
+ 
+ # Create a file in the current directory, not in $TMPDIR.
+@@ -187,7 +187,7 @@ basename_setup () { args=$tmp_in; }
+ dirname_setup () { args=$tmp_in; }
+ expr_setup () { args=foo; }
+ 
+-# Punt, in case GNU `id' hasn't been installed yet.
++# Punt, in case GNU 'id' hasn't been installed yet.
+ groups_setup () { args=--version; }
+ 
+ pathchk_setup () { args=$tmp_in; }
+-- 
+1.8.3.1
+
