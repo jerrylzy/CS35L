@@ -1,0 +1,50 @@
+00400000-00421000 r-xp 00000000 00:27 46310                              /usr/local/cs/coreutils-8.25/bin/cp
+00620000-00621000 r--p 00020000 00:27 46310                              /usr/local/cs/coreutils-8.25/bin/cp
+00621000-00622000 rw-p 00021000 00:27 46310                              /usr/local/cs/coreutils-8.25/bin/cp
+00622000-00623000 rw-p 00000000 00:00 0 
+01541000-01562000 rw-p 00000000 00:00 0                                  [heap]
+7fae344d9000-7fae3aa00000 r--p 00000000 08:07 669923                     /usr/lib/locale/locale-archive
+7fae3aa00000-7fae3aa16000 r-xp 00000000 08:07 261167                     /usr/lib64/libpthread-2.17.so
+7fae3aa16000-7fae3ac16000 ---p 00016000 08:07 261167                     /usr/lib64/libpthread-2.17.so
+7fae3ac16000-7fae3ac17000 r--p 00016000 08:07 261167                     /usr/lib64/libpthread-2.17.so
+7fae3ac17000-7fae3ac18000 rw-p 00017000 08:07 261167                     /usr/lib64/libpthread-2.17.so
+7fae3ac18000-7fae3ac1c000 rw-p 00000000 00:00 0 
+7fae3ac1c000-7fae3ac1f000 r-xp 00000000 08:07 288376                     /usr/lib64/libdl-2.17.so
+7fae3ac1f000-7fae3ae1e000 ---p 00003000 08:07 288376                     /usr/lib64/libdl-2.17.so
+7fae3ae1e000-7fae3ae1f000 r--p 00002000 08:07 288376                     /usr/lib64/libdl-2.17.so
+7fae3ae1f000-7fae3ae20000 rw-p 00003000 08:07 288376                     /usr/lib64/libdl-2.17.so
+7fae3ae20000-7fae3ae44000 r-xp 00000000 08:07 263642                     /usr/lib64/liblzma.so.5.0.99
+7fae3ae44000-7fae3b043000 ---p 00024000 08:07 263642                     /usr/lib64/liblzma.so.5.0.99
+7fae3b043000-7fae3b044000 r--p 00023000 08:07 263642                     /usr/lib64/liblzma.so.5.0.99
+7fae3b044000-7fae3b045000 rw-p 00024000 08:07 263642                     /usr/lib64/liblzma.so.5.0.99
+7fae3b045000-7fae3b0a5000 r-xp 00000000 08:07 261643                     /usr/lib64/libpcre.so.1.2.0
+7fae3b0a5000-7fae3b2a4000 ---p 00060000 08:07 261643                     /usr/lib64/libpcre.so.1.2.0
+7fae3b2a4000-7fae3b2a5000 r--p 0005f000 08:07 261643                     /usr/lib64/libpcre.so.1.2.0
+7fae3b2a5000-7fae3b2a6000 rw-p 00060000 08:07 261643                     /usr/lib64/libpcre.so.1.2.0
+7fae3b2a6000-7fae3b45c000 r-xp 00000000 08:07 261141                     /usr/lib64/libc-2.17.so
+7fae3b45c000-7fae3b65c000 ---p 001b6000 08:07 261141                     /usr/lib64/libc-2.17.so
+7fae3b65c000-7fae3b660000 r--p 001b6000 08:07 261141                     /usr/lib64/libc-2.17.so
+7fae3b660000-7fae3b662000 rw-p 001ba000 08:07 261141                     /usr/lib64/libc-2.17.so
+7fae3b662000-7fae3b667000 rw-p 00000000 00:00 0 
+7fae3b667000-7fae3b66b000 r-xp 00000000 08:07 261601                     /usr/lib64/libattr.so.1.1.0
+7fae3b66b000-7fae3b86a000 ---p 00004000 08:07 261601                     /usr/lib64/libattr.so.1.1.0
+7fae3b86a000-7fae3b86b000 r--p 00003000 08:07 261601                     /usr/lib64/libattr.so.1.1.0
+7fae3b86b000-7fae3b86c000 rw-p 00004000 08:07 261601                     /usr/lib64/libattr.so.1.1.0
+7fae3b86c000-7fae3b873000 r-xp 00000000 08:07 261607                     /usr/lib64/libacl.so.1.1.0
+7fae3b873000-7fae3ba73000 ---p 00007000 08:07 261607                     /usr/lib64/libacl.so.1.1.0
+7fae3ba73000-7fae3ba74000 r--p 00007000 08:07 261607                     /usr/lib64/libacl.so.1.1.0
+7fae3ba74000-7fae3ba75000 rw-p 00008000 08:07 261607                     /usr/lib64/libacl.so.1.1.0
+7fae3ba75000-7fae3ba96000 r-xp 00000000 08:07 261481                     /usr/lib64/libselinux.so.1
+7fae3ba96000-7fae3bc96000 ---p 00021000 08:07 261481                     /usr/lib64/libselinux.so.1
+7fae3bc96000-7fae3bc97000 r--p 00021000 08:07 261481                     /usr/lib64/libselinux.so.1
+7fae3bc97000-7fae3bc98000 rw-p 00022000 08:07 261481                     /usr/lib64/libselinux.so.1
+7fae3bc98000-7fae3bc9a000 rw-p 00000000 00:00 0 
+7fae3bc9a000-7fae3bcbb000 r-xp 00000000 08:07 287705                     /usr/lib64/ld-2.17.so
+7fae3be8e000-7fae3be94000 rw-p 00000000 00:00 0 
+7fae3be98000-7fae3bebb000 rw-p 00000000 00:00 0 
+7fae3bebb000-7fae3bebc000 r--p 00021000 08:07 287705                     /usr/lib64/ld-2.17.so
+7fae3bebc000-7fae3bebd000 rw-p 00022000 08:07 287705                     /usr/lib64/ld-2.17.so
+7fae3bebd000-7fae3bebe000 rw-p 00000000 00:00 0 
+7ffc200ba000-7ffc200db000 rw-p 00000000 00:00 0                          [stack]
+7ffc20162000-7ffc20164000 r-xp 00000000 00:00 0                          [vdso]
+ffffffffff600000-ffffffffff601000 r-xp 00000000 00:00 0                  [vsyscall]

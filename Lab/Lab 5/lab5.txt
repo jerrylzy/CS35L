@@ -1,0 +1,296 @@
+/*
+ * <Jerry Liu>
+ * CS35L  	Lab 5
+ *
+ */
+
+1. Deal with Source File
+a. download source file
+wget http://web.cs.ucla.edu/classes/winter16/cs35L/ \
+assign/coreutils-with-bug.tar.gz
+
+b. unzip source file
+tar -xvzf coreutils-with-bug.tar.gz
+
+c. go to the folder of source codes
+cd coreutils-with-bug/
+
+2. Build
+a. configure
+./configure --prefix='/u/cs/ugrad/zhongyan/cs35L/lab5/coreutils'
+
+Use the prefix to set the default folder of installation
+
+b. build executables
+make
+
+However, we ran into a problem.
+
+Error Message:
+In file included from utimecmp.c:41:0:
+utimens.h:2:5: error: conflicting types for 'futimens'
+ int futimens (int, char const *, struct timespec const [2]);
+     ^
+In file included from utimecmp.h:25:0,
+                 from utimecmp.c:25:
+/usr/include/sys/stat.h:373:12: note: previous declaration of 'futimens' was here
+ extern int futimens (int __fd, const struct timespec __times[2]) __THROW;
+
+As we can see, the same function in two different places have difference
+parameter names.
+
+c. get the patch
+wget http://web.cs.ucla.edu/classes/winter16/cs35L/assign/coreutils.diff
+
+d. edit the patch
+We can notice that the filename for the old one has a '~' at the end.
+So we should remove them before proceeed.
+
+I used emacs, and M-% to get rid of them.
+
+e. apply the patch
+patch -p0 < coreutils.diff
+The output showed that the patch was applied successfully.
+
+The patch fixed the problem we encountered in b by
+changing the function name that has 3 parameters,
+together with calls to that function, to 'coreutils_futimens'.
+
+This avoids the problem because now the function names are different.
+
+f. build
+make -j30
+
+Using -j30 to build faster.
+
+g. install
+make install
+
+Now the libraries are installed to
+~/cs35L/lab5/coreutils
+
+3. Reproduce the bug
+a. go to the lab folder
+cd ~/cs35L/lab5/
+
+b. reproduce the bug
+I wrote a script to save some typing.
+
+===========================   output_bug.sh =============================
+#!/bin/bash                                                                     
+
+tmp=$(mktemp -d)
+cd $tmp
+touch -d '1918-11-11 11:00 GMT' wwi-armistice
+touch now
+sleep 1
+touch now1
+TZ=UTC0 ~/cs35L/lab5/coreutils/bin/ls -lt --full-time wwi-armistice now now1
+cd ~/cs35L/lab5/
+rm -rf $tmp
+
+======================================================================
+
+chmod +x output_bug.sh
+./output_bug.sh 
+-rw-r--r-- 1 zhongyan csugrad 0 1918-11-11 11:00:00.000000000 +0000 wwi-armistice
+-rw-r--r-- 1 zhongyan csugrad 0 2016-02-02 21:26:05.985810533 +0000 now1
+-rw-r--r-- 1 zhongyan csugrad 0 2016-02-02 21:26:04.981794997 +0000 now
+
+The bug exists, and it appears as if the past is the future.
+
+4. Find the bug
+I first manually typed the first 7 lines in my script that
+I wrote in 3b to make sure that those files exist.
+
+cd $tmp
+gdb ~/cs35L/lab5/coreutils/bin/ls
+
+(gdb) info functions
+and I found a function called sort_files.
+Also, when I set a breakpoint solely on sort_files, I found
+
+(gdb) s
+2975		      func = sort_reverse ? rev_cmp_mtime : compare_mtime;
+
+Then I went to check the source file,
+and found out that 'compare_mtime' was a function;
+Given the '-lt' arguments, 'compare_mtime' is used instead of 'rev_cmp_mtime'.
+Also, 'compare_mtime' just calls another function called 'cmp_mtime'!
+
+
+I think these two functions have something to do with the bug.
+
+So then I set a breakpoint at each of the two functions.
+(gdb) break sort_files 
+Breakpoint 1 at 0x404290: file ls.c, line 2954.
+(gdb) break cmp_mtime
+Breakpoint 2 at 0x405110: cmp_mtime. (4 locations)
+
+Run the option:
+(gdb) r -lt --full-time wwi-armistice now now1
+Starting program: /w/home.04/cs/ugrad/zhongyan/cs35L/lab5/coreutils/bin/ls -lt wwi-armistice now now1
+
+Breakpoint 1, sort_files () at ls.c:2954
+2954	{
+(gdb) s
+2962	  if (! setjmp (failed_strcoll))
+(gdb) s
+2964	      switch (sort_type)
+(gdb) s
+2969		  switch (time_type)
+(gdb) s
+2975		      func = sort_reverse ? rev_cmp_mtime : compare_mtime;
+(gdb) s
+3034	  qsort (files, files_index, sizeof *files, func);
+(gdb) s
+
+Breakpoint 2, compare_mtime (a=0x618180, b=0x618230) at ls.c:2884
+2884	static int compare_mtime (V a, V b) { return cmp_mtime (a, b, xstrcoll); }
+(gdb) s
+cmp_mtime (cmp=0x404510 <xstrcoll>, b=0x618230, a=0x618180) at ls.c:2884
+2884	static int compare_mtime (V a, V b) { return cmp_mtime (a, b, xstrcoll); }
+(gdb) s
+timespec_cmp (b=..., a=...) at ../lib/timespec.h:48
+48	  int diff = a.tv_sec - b.tv_sec;
+(gdb) list
+43	/* Return negative, zero, positive if A < B, A == B, A > B, respectively.
+44	   Assume the nanosecond components are in range, or close to it.  */
+45	static inline int
+46	timespec_cmp (struct timespec a, struct timespec b)
+47	{
+48	  int diff = a.tv_sec - b.tv_sec;
+49	  return diff ? diff : a.tv_nsec - b.tv_nsec;
+50	}
+51	
+52	# if ! HAVE_DECL_NANOSLEEP
+(gdb) s
+49	  return diff ? diff : a.tv_nsec - b.tv_nsec;
+
+(gdb) info locals
+diff = 4
+
+This one seems normal
+
+Then I ran another iteration and found out:
+
+(gdb) s
+timespec_cmp (b=..., a=...) at ../lib/timespec.h:48
+48	  int diff = a.tv_sec - b.tv_sec;
+(gdb) s
+49	  return diff ? diff : a.tv_nsec - b.tv_nsec;
+(gdb) info locals
+diff = -1226672991
+
+the diff gives a very negative number, which looks like integer overflow.
+
+So I typed continue several times to wait for the program to finish,
+and I get:
+
+-rw-r--r-- 1 zhongyan csugrad 0 1918-11-11 03:00:00.000000000 -0800 wwi-armistice
+-rw-r--r-- 1 zhongyan csugrad 0 2016-02-02 18:58:25.346477726 -0800 now1
+-rw-r--r-- 1 zhongyan csugrad 0 2016-02-02 18:58:21.639420364 -0800 now
+
+If we look at the difference between now and now1, the diff for seconds is 4,
+which corresponds to the first 'diff = 4';
+
+25 - 21 = 4
+==> we can infer that the order starts with the last file, which is now1,
+then now, and then wwi-armistice.
+
+Now, compared to 1918, 2016 has too many seconds compared to 1918,
+which results in integer overflow. (value > 0x7ffffffff)
+
+To avoid the problem,
+we can simply avoid subtraction to avoid integer overflow.
+
+(gdb) quit
+
+5. Fix the bug
+a. go back to the source code folder
+cd ~/cs35L/lab5/coreutils-with-bug/lib
+
+b. copy the file to modify:
+cp timespec.h ../../timespec.h
+cd ../../
+
+c. produce the patch
+used emacs to modify 'timespec.h'
+emacs timespec.h
+
+Go to line 48 to modify the function 'timespec_cmp'
+M-g g 48
+
+The simplest way is to avoid subtraction:
+
+static inline int
+timespec_cmp (struct timespec a, struct timespec b)
+{
+  return a.tv_sec > b.tv_sec ? 1 : (a.tv_sec < b.tv_sec ?
+                                    -1 : a.tv_nsec - b.tv_nsec);
+}
+
+Then I use diff to produce the patch:
+
+diff -u coreutils-with-bug/lib/timespec.h timespec.h > coreutils-with-bug/patch.diff
+
+Get ChangeLog
+emacs
+C-x 4 a:
+
+2016-02-03  Zhongyang Liu  <zhongyan@lnxsrv09.seas.ucla.edu>
+
+        * lib/timespec.h (timespec_cmp):
+        Direct comparison to avoid integer overflow with subtraction.
+        This avoids problems with ancient times.
+
+cp ChangeLog lab5.diff
+cat patch.diff >> lab5.diff
+
+But we are not done yet.
+We need to modify the path.
+emacs lab5.diff
+I replaced 'timespec.h' with 'lib/timespec.h'
+and 'coreutils-with-bug/lib/timespec.h' with 'lib/timespec.h'
+
+6. Test the patch
+$ patch -p0 < lab5.diff
+patching file lib/timespec.h
+
+make
+
+cd ..
+
+Then I modified the output_bug.sh script a little bit to be test_patch.sh:
+- TZ=UTC0 ~/cs35L/lab5/coreutils/bin/ls -lt --full-time wwi-armistice now now1
++ TZ=UTC0 ~/cs35L/lab5/coreutils-with-bug/src/ls -lt --full-time wwi-armistice now now1
+
+./test_patch.sh
+-rw-r--r-- 1 zhongyan csugrad 0 2016-02-04 03:34:11.446052717 +0000 now1
+-rw-r--r-- 1 zhongyan csugrad 0 2016-02-04 03:34:10.440037098 +0000 now
+-rw-r--r-- 1 zhongyan csugrad 0 1918-11-11 11:00:00.000000000 +0000 wwi-armistice
+
+Now the order is correct.
+
+7. Test with SEASnet Machine
+Go to home folder
+cd ~
+
+$ touch -d '1918-11-11 11:00 GMT' wwi-armistice
+$ touch now
+$ touch now1
+$ TZ=UTC0 ls -lt --full-time wwi-armistice now now1
+-rw-r--r-- 1 zhongyan csugrad 0 2054-12-17 17:28:16.000000000 +0000 wwi-armistice
+-rw-r--r-- 1 zhongyan csugrad 0 2016-02-03 04:17:38.514185000 +0000 now1
+-rw-r--r-- 1 zhongyan csugrad 0 2016-02-03 04:17:35.786817000 +0000 now
+
+Clearly, the SEASnet server cannot recognize a time as ancient as in 1918,
+and it sees it as a very-future 2054 year time.
+
+The reason is that the local linux file system uses 64 bit,
+and the largest bit is a sign bit indicating whether the time is in the past
+or in the future.
+
+However, the SEASnet uses 32 bit NFS system, which truncates the first 32bit,
+including the sign bit. Thus when we check things on the SEASnet computers,
+it will return a very future time.

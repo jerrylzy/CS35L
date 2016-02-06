@@ -1,0 +1,6 @@
+2016-02-02  Zhongyang Liu  <zhongyan@lnxsrv09.seas.ucla.edu>
+
+	* lib/timespec.h (timespec_cmp):
+	Direct comparison to avoid integer overflow with subtraction.
+	This avoids problems with ancient times.
+

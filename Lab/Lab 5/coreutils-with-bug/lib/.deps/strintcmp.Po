@@ -1,0 +1,13 @@
+strintcmp.o: strintcmp.c /usr/include/stdc-predef.h ../config.h \
+ strnumcmp-in.h strnumcmp.h \
+ /usr/local/cs/gcc-5.3.0/lib/gcc/x86_64-unknown-linux-gnu/5.3.0/include/stddef.h
+
+/usr/include/stdc-predef.h:
+
+../config.h:
+
+strnumcmp-in.h:
+
+strnumcmp.h:
+
+/usr/local/cs/gcc-5.3.0/lib/gcc/x86_64-unknown-linux-gnu/5.3.0/include/stddef.h:
