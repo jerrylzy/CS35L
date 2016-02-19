@@ -1,0 +1,103 @@
+/*
+ * <Jerry Liu>
+ * CS35L  	Lab 6
+ *
+ */
+
+1. Set up Ubuntu
+I used the lab computer and entered the BIOS to change the boot sequence.
+
+Then I used try Ubuntu to run it from the DVD.
+
+2. Install OpenSSH
+I did:
+
+sudo apt-get install openssh-server
+sudo apt-get install openssh-client
+
+To install OpenSSH stuff.
+
+3. Setup Server
+a. generate keys
+ssh-keygen
+And I used the defualt location
+
+The password (public key) is: cs35llab6
+
+Emacs is not installed so I installed it using:
+sudo apt-get install emacs
+
+b. find out ip address
+ifconfig
+
+10.97.85.72
+
+Kyle:
+10.97.85.69
+
+Daniel:
+10.97.85.26
+
+Disable password-based authentication:
+sudo emacs /etc/ssh/sshd_config
+
+4. Setup Clients Account
+
+For Kyle:
+sudo useradd -d /home/kyle -m kyle
+sudo passwd kyle
+sudo mkdir /home/kyle/.ssh
+cd /home/kyle
+sudo chown -R kyle .ssh
+sudo chmod 700 .ssh
+
+For Daniel:
+sudo useradd -d /home/daniel -m daniel
+sudo passwd daniel
+sudo mkdir /home/daniel/.ssh
+cd /home/daniel
+sudo chown -R daniel .ssh
+sudo chmod 700 .ssh
+
+For me:
+I typed the following on Kyle's and Daniel's computer
+sudo useradd -d /home/jerry -m jerry
+sudo passwd jerry
+
+5. Test SSH for Password Authentication
+Kyle's host
+ssh -X jerry@10.97.85.69
+Then I typed
+xterm
+
+It popped up an xterm window.
+
+It also works on Daniel's host.
+Steps are the same except with a different IP address.
+
+6. Setup key-based authentication
+For Kyle:
+ssh-copy-id -i jerry@10.97.85.69
+I first typped yes.
+Then I typped in my password to log in and exited.
+
+ssh-add
+I typped in the public key: cs35llab6
+
+Then I did
+ssh jerry@10.97.85.69
+Then every time after this I can log in without typing anything.
+
+Then I did
+ssh -X jerry@10.97.85.69
+xterm
+An xterm shell window popped up.
+
+And kyle checked using:
+ps aux
+He saw a daemon called xterm and the user is jerry
+
+So it works.
+
+For Daniel's host, steps are the same except with a different IP address.
+It also works.

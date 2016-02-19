@@ -1,0 +1,35 @@
+1.
+The resulting network is still secure for the public-key cryptosystem,
+because the private key is stored on the computer and other teams have no way
+to find out what our private key is. So they cannot enter our host and decrypt
+any kind of message between our team.
+Also, it is computationally infeasible to find out the private key
+given the public key. So our network is still secure.
+
+(1) Still secure
+If other teams had also tapped our keyboards and
+had observed all of our keystrokes, they still cannot find out what
+our private key is since even if we use the same passphrase, the generated
+private key is going to be different.
+
+(2) Depends
+If the system files are located on the USB drive, then they can directly
+read the private key data and use the private key they obtained to decipher
+all of our communications and log into our host.
+Otherwise, they cannot do any damage since they still do not know our
+private key.
+
+2.
+The program verifies whether the the target file and the detached
+signatures match or not. It is useful when people can verify my public keys.
+However, since a hacker can replace the public key inside, recreate the tarball,
+and then output the detached signature file from the tar file,
+(possibly using my name and emails),
+the gpg --verify command doesn't really help here since it only verifies whether
+the signatures are good and match.
+
+To fix this, I can post my public key / my detached signature file
+on the web and anyone who downloaded my tar file can verify whether
+the file is created by me and whether the file is modified.
+We can rely on CA's to send our public keys securely
+so that the receiver can be assured to have the right key to verify.
