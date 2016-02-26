@@ -1,0 +1,116 @@
+sfrob and sfrob are compiled with -O2 optimization
+
+1. Performance Comparison
+
+Each line has exactly 16 characters, randomly chosen from ASCII table.
+
+[version number of lines]
+Time unit: s
+
+=================================================================
+|ver		|	real	|	user	|	sys	|
+|sfrob  1000	|	0.006	|	0.003	|	0.000	|
+|sfrobu 1000	|	0.050	|	0.004	|	0.044	|
+|sfrob  10000	|	0.031	|	0.019	|	0.004	|
+|sfrobu 10000	|	0.462	|	0.017	|	0.436	|
+|sfrob  100000	|	0.311	|	0.212	|	0.009	|
+|sfrobu 100000	|	4.735	|	0.249	|	4.427	|
+|sfrob  1000000	|	3.209	|	2.335	|	0.071	|
+|sfrobu 1000000	|	47.072	|	2.396	|	43.803	|
+=================================================================
+
+Run time comparison between column 'real'
+and number of comparisons
+
+|lines	|	sfrob	|	sfrobu	|	comparison	|
+|1000	|	1	|	10.5	|	8692		|
+|10000	|	1	|	14.24	|	120496		|
+|100000	|	1	|	14.80	|	1536214		|
+|1000000|	1	|	12.34	|	18674326	|
+
+As we can see, the buffered version is always more than 10x faster.
+By linear regression method,
+The number of comparisons is linear to the number of lines.
+f(x) = 18.787x - 133288
+where x = number of lines. standard deviation for the slop is: 0.213
+
+2. Performance Analysis of the shell version
+
+* File Size: 421.4KB
+a. Unbuffered version
+$ time ./sfrobu < input.txt > output_sfrobu
+Comparisons: 120469
+
+real	0m0.459s
+user	0m0.024s
+sys	0m0.426s
+
+b. Buffered version
+$ time ./sfrob < input.txt > output_sfrob
+
+real	0m0.036s
+user	0m0.023s
+sys	0m0.000s
+
+c. Shell script version
+$ time ./sfrobs < input.txt > output_sfrobs
+
+real	0m0.023s
+user	0m0.008s
+sys	0m0.007s
+
+
+* File Size: 5MB
+a. Unbuffered version
+time ./sfrobu < input.txt > output_sfrobu
+Comparisons: 250289
+
+real	0m5.498s
+user	0m0.245s
+sys	0m5.184s
+
+b. Buffered version
+$ time ./sfrob < input.txt > output_sfrob
+
+real	0m0.292s
+user	0m0.213s
+sys	0m0.011s
+
+c. Shell Script version
+$ time ./sfrobs < input.txt > output_sfrobs
+
+real	0m0.099s
+user	0m0.018s
+sys	0m0.024s
+
+* File Size: 21MB
+
+a. Unbuffered version
+$ time ./sfrobu < input.txt > output_sfrobu
+Comparisons: 8837348
+
+real	0m24.083s
+user	0m1.251s
+sys	0m22.495s
+
+b. Buffered version
+$ time ./sfrob < input.txt > output_sfrob
+
+real	0m1.526s
+user	0m1.108s
+sys	0m0.043s
+
+c. Shell version
+$ time ./sfrobs < input.txt > output_sfrobs
+
+real	0m0.882s
+user	0m0.436s
+sys	0m0.136s
+
+
+Clearly, the shell script version outplays all the above.
+It is written and highly optimized by the most brilliant people
+in gnu community and it should have been the fastest.
+
+Also my sfrob / sfrobu does error checking reading /writing each bytes,
+which should have an impact on performance.

@@ -1,0 +1,140 @@
+/*
+ * <Jerry Liu>
+ * CS35L  	Lab 7
+ *
+ */
+
+1. Write program
+THen I compiled them using:
+gcc -std=c99 -o tr2b tr2b.c
+gcc -std=c99 -o tr2u tr2u.c
+
+2. Get a big file
+I used:
+head --bytes=5000000 /dev/urandom > input.txt
+
+I also wrote a simple C++ program to generate a 5MB file.
+
+#include <iostream>
+using namespace std;
+
+int main()
+{
+  for (int i = 0; i < 5000000; i++)
+  cout << 'a';
+}
+
+g++ -o out output.cpp
+./out > input_a.txt
+
+Check:
+ls -l
+-rw-r--r-- 1 zhongyan csugrad   5000000 Feb 16 18:47 input_a.txt
+
+3. Use strace to comapre sys calls
+a. copy one file to another
+I used:
+strace -c ./tr2b 'a' 'x' < input_a.txt > output_tr2b
+% time     seconds  usecs/call     calls    errors syscall
+------ ----------- ----------- --------- --------- ----------------
+ 22.57    0.000058           1        77           write
+ 18.68    0.000048           5         9           mmap
+ 14.79    0.000038           0        79           read
+ 10.51    0.000027          14         2           open
+ 10.12    0.000026           7         4           mprotect
+  7.00    0.000018           5         4           fstat
+  3.89    0.000010          10         1           munmap
+  3.50    0.000009           9         1         1 access
+  2.72    0.000007           4         2           close
+  2.72    0.000007           7         1           execve
+  1.95    0.000005           5         1           brk
+  1.56    0.000004           4         1           arch_prctl
+------ ----------- ----------- --------- --------- ----------------
+100.00    0.000257                   182         1 total
+
+strace -c ./tr2u 'a' 'x' < input_a.txt > output_tr2u
+% time     seconds  usecs/call     calls    errors syscall
+------ ----------- ----------- --------- --------- ----------------
+ 55.60    5.514564           1   5000000           write
+ 44.39    4.402908           1   5000002           read
+  0.00    0.000039           6         7           mmap
+  0.00    0.000025           6         4           mprotect
+  0.00    0.000015           8         2           open
+  0.00    0.000009           9         1           munmap
+  0.00    0.000008           8         1         1 access
+  0.00    0.000007           4         2           fstat
+  0.00    0.000007           7         1           execve
+  0.00    0.000006           3         2           close
+  0.00    0.000004           4         1           brk
+  0.00    0.000004           4         1           arch_prctl
+------ ----------- ----------- --------- --------- ----------------
+100.00    9.917596              10000024         1 total
+
+Obviously the buffered version has much fewer system calls.
+
+b. copy one file to the terminal
+strace -c ./tr2b 'a' 'x' < input_a.txt
+% time     seconds  usecs/call     calls    errors syscall
+------ ----------- ----------- --------- --------- ----------------
+ 86.92    0.002014           0      4883           write
+  4.10    0.000095          11         9           mmap
+  3.67    0.000085           1        79           read
+  1.21    0.000028           7         4           mprotect
+  1.17    0.000027           7         4           fstat
+  0.73    0.000017           9         2           open
+  0.52    0.000012          12         1           brk
+  0.47    0.000011          11         1           munmap
+  0.47    0.000011          11         1         1 access
+  0.30    0.000007           7         1           execve
+  0.26    0.000006           3         2           close
+  0.17    0.000004           4         1           arch_prctl
+------ ----------- ----------- --------- --------- ----------------
+100.00    0.002317                  4988         1 total
+
+strace -c ./tr2u 'a' 'x' < input_a.txt
+% time     seconds  usecs/call     calls    errors syscall
+------ ----------- ----------- --------- --------- ----------------
+ 58.05    6.228045           1   5000000           write
+ 41.95    4.499923           1   5000002           read
+  0.00    0.000038           5         7           mmap
+  0.00    0.000025           6         4           mprotect
+  0.00    0.000018           9         2           open
+  0.00    0.000010          10         1           munmap
+  0.00    0.000008           4         2           fstat
+  0.00    0.000007           4         2           close
+  0.00    0.000007           7         1         1 access
+  0.00    0.000006           6         1           execve
+  0.00    0.000004           4         1           brk
+  0.00    0.000004           4         1           arch_prctl
+------ ----------- ----------- --------- --------- ----------------
+100.00   10.728095              10000024         1 total
+
+In this case, the buffered version also has much fewer system calls.
+Also, for the buffered version, we notice that copying a file to the terminal
+uses much more system calls than just writing to another file.
+
+For the unbuffered version, we have 5M write calls, which is expected.
+We have two more read calls because we used fstat to read the file information.
+
+4. Test time
+
+Obviously the buffered version has a huge performance advantage
+because it uses much fewer system calls.
+
+tr2b:
+
+time ./tr2b 'abc' 'xyz' < input_a.txt > output_tr2b
+
+real	0m0.217s
+user	0m0.145s
+sys	0m0.006s
+
+tr2u:
+
+time ./tr2u 'abc' 'xyz' < input_a.txt > output_tr2u
+
+real	0m5.696s
+user	0m0.239s
+sys	0m5.391s
+
+
