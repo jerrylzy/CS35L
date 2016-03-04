@@ -1,0 +1,55 @@
+/*
+ * <Jerry Liu>
+ * CS35L  Lab 8
+ */
+
+1. Check version
+$ which sort
+/usr/local/cs/bin/sort
+
+$ sort --version
+sort (GNU coreutils) 8.25
+
+So it is the new version.
+
+2. Generate a file containing 10M doubles
+I used the following command:
+
+since every double has 8 bytes, we need to read at least 80MB data.
+
+od -An -t fD -N 80000000 < /dev/urandom |
+tr -s [:blank:] '\n' |
+sed '/^$/d' > random.txt
+
+3. Performance Comparison
+a. no --parallel option
+$ time -p sort -g random.txt > /dev/null
+real 35.00
+user 195.38
+sys 0.47
+
+b. 1 thread
+$ time -p sort -g --parallel=1 random.txt > /dev/null
+real 180.22
+user 179.91
+sys 0.31
+
+c. 2 threads
+$ time -p sort -g --parallel=2 random.txt > /dev/null
+real 94.48
+user 179.77
+sys 0.40
+
+d. 4 threads
+$ time -p sort -g --parallel=4 random.txt > /dev/null
+real 54.41
+user 186.45
+sys 0.51
+
+e. 8 threads
+$ time -p sort -g --parallel=8 random.txt > /dev/null
+real 34.86
+user 197.20
+sys 0.59
+
+
