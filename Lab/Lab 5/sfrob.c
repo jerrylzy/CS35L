@@ -7,7 +7,7 @@
 #include <errno.h>
 
 #define SPACE       ' '
-#define INIT_SIZE   20
+#define INIT_SIZE   19
 
 char decrypt(const char c);
 int  frobcmp(char const* a, char const* b);
@@ -15,117 +15,91 @@ int  cmpWrapper(const void* a, const void* b);
 void checkMemErr(void* ptr);
 void checkIOErr(FILE* p);
 void reportErr(const char* msg);
+void strWrite(const char* str);
+void initLinebuf(char** linebuf, char* buf, size_t size);
 
 int main(void)
 {
     /* Declare Variables, a pain in C */
     int (* cmp) (const void*, const void*);
-    char** input, ** input2, * linebuf, * linebuf2, curChar;
-    size_t maxLineNum, lineNum, lineSize, bufferSize, strSize, i, j;
+    char* input, * input2, ** linebuf, curChar;
+    size_t lineNum, lineSize, bufferSize, i, fileSize;
     int isEOF, isSpace;
     
     /* Initialize variables */
-    bufferSize = INIT_SIZE, maxLineNum = INIT_SIZE;
-    lineNum = 0, lineSize = 0, isEOF = feof(stdin), strSize = 0;
+    bufferSize = 0, lineNum = 0, lineSize = 0, isEOF = feof(stdin);
+    fileSize = INIT_SIZE;
     
     /* Set frobcmp pointer */
     cmp = &cmpWrapper;
     
     /* Setup Initial Buffer */
-    linebuf = (char*) malloc(sizeof(char) * bufferSize);
-    checkMemErr(linebuf);
-    input = (char**) malloc(sizeof(char*) * maxLineNum);
+    input = (char*) malloc(sizeof(char) * fileSize);
     checkMemErr(input);
     
     /*                                                      *
      *  To prevent getting a char with value EOF,           *
-     *  We use feof(stdin) as the condition for the loop.   *
+     *  We use feof(STDIN_FILENO) as the condition for the loop.   *
      */
     while ( ! isEOF)
     {
         curChar = getchar();
+        checkIOErr(stdin);
         isSpace = curChar == SPACE;
         isEOF = feof(stdin);
-        if (lineSize == 0 && isSpace)
+        if ( ! lineSize && isSpace)
             continue;
         /* Resize buffer */
-        if (lineSize == bufferSize)
+        if (bufferSize == fileSize)
         {
-            bufferSize *= 2;
-            linebuf2 = (char*) realloc(linebuf, sizeof(char) * bufferSize);
-            checkMemErr(linebuf2);
-            linebuf = linebuf2;
+            fileSize *= 2;
+            input2 = (char*) realloc(input, sizeof(char) * fileSize);
+            checkMemErr(input2);
+            input = input2;
         }
         
         /* Store the current character */
         if ( ! isEOF)
         {
-            strSize++;
-            linebuf[lineSize++] = curChar;
+            input[bufferSize++] = curChar;
+            lineSize++;
             if ( ! isSpace)
                 continue;
         }
         else
         {
-            checkIOErr(stdin);    /* Check IO Error if getchar returns EOF */
-            if ( ! strSize)
+            if ( ! bufferSize)
             {
                 free(input);
-                free(linebuf);
                 return 0;         /* An Empty file or a file with only spaces */
             }
             /* Append a space if there is none */
-            if ( ! lineSize && linebuf != NULL)
-                free(linebuf);
-            else if (lineSize && linebuf[lineSize-1] != SPACE)
-                linebuf[lineSize++] = SPACE;
+            if (input[bufferSize-1] != SPACE)
+                input[bufferSize++] = SPACE;
+            if ( ! lineSize)
+                break;
         }
         
-        /* Reached a new line */
-        input[lineNum++] = linebuf;
-        linebuf = NULL;
-        
-        if ( ! isEOF)
-        {
-            /* Resize input */
-            if (lineNum == maxLineNum)
-            {
-                maxLineNum *= 2;
-                input2 = (char**) realloc(input, sizeof(char*) * maxLineNum);
-                checkMemErr(input2);
-                input = input2;
-            }
-            lineSize = 0;
-            
-            /* Allocate storage for a new line */
-            bufferSize = INIT_SIZE;
-            linebuf = (char*) malloc(sizeof(char) * bufferSize);
-            checkMemErr(linebuf);
-        }
+        lineNum++;  /* New Line */
+        lineSize = 0;
     }
+    linebuf = (char**) malloc(sizeof(char*) * lineNum);
+    checkMemErr(linebuf);
+    
+    initLinebuf(linebuf, input, bufferSize);
     
     /* Sort the input */
-    qsort(input, lineNum, sizeof(char*), cmp);
+    qsort(linebuf, lineNum, sizeof(char*), cmp);
     
     /* Output results */
     for (i = 0; i < lineNum; i++)
-    {
-        for (j = 0, curChar = input[i][0]; curChar != SPACE; curChar = input[i][++j])
-        {
-            putchar(curChar);
-            checkIOErr(stdout);
-        }
-        putchar(curChar);
-        checkIOErr(stdout);
-    }
+        strWrite(linebuf[i]);
     
     /* Free input array */
-    for (i = 0; i < lineNum; i++)
-        free(input[i]);
+    free(linebuf);
     free(input);
     return 0;
 }
-
 
 /* Report error */
 inline
@@ -163,6 +137,30 @@ int cmpWrapper(const void* a, const void* b)
     return frobcmp(*((const char**) a), *((const char**) b));
 }
 
+void strWrite(const char* str)
+{
+    for (;;)
+    {
+        putchar(*str);
+        checkIOErr(stdout);
+        if (*str++ == SPACE)
+            return;
+    }
+}
+
+void initLinebuf(char** linebuf, char* buf, size_t size)
+{
+    size_t i, lineNum;
+    char* line = buf;
+    for (i = 0, lineNum = 0; i < size; i++)
+    {
+        if (buf[i] == SPACE)
+        {
+            linebuf[lineNum++] = line;
+            line = buf + i + 1;
+        }
+    }
+}
 
 /* Compare two frobnicated characters */
 int frobcmp(char const* a, char const* b)
