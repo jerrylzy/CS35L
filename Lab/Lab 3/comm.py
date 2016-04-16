@@ -51,11 +51,14 @@ class comm:
         self.lines2 = self.str_process(self.lines2)
 
     def str_process(self, file):
-        temp = file[-1]
-        NEW_LINE = "\n"
-        if NEW_LINE not in temp:
-            temp += NEW_LINE
-        file[-1] = temp
+        if not len(file):
+            file.append("\n")
+        else:
+            temp = file[-1]
+            NEW_LINE = "\n"
+            if NEW_LINE not in temp:
+                temp += NEW_LINE
+            file[-1] = temp
         return file
 
     def writeline(self, line, output_class):
@@ -120,7 +123,7 @@ class comm:
             if j < len_line2:
                 line2 = self.lines2[j]
 
-            if line1 == EMPTY or line1 > line2:
+            if line1 == EMPTY or (line2 != EMPTY and line1 > line2):
                 self.writeline(line2, 2)
                 j += 1
             elif line2 == EMPTY or line1 < line2:
