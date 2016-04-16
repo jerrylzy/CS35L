@@ -21,7 +21,7 @@ Please see <http://www.gnu.org/licenses/> for a copy of the license.
 $Id: randline.py,v 1.4 2010/04/05 20:04:43 eggert Exp $
 """
 
-import random, locale, string, sys
+import sys
 from optparse import OptionParser
 
 delimiter = "        "
