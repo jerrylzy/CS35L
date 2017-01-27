@@ -24,9 +24,9 @@ Assignment # | Assignment Score | Comments
 ------------ | ---------------- | --------
 1            | 100              |
 2            | 100              |
-3            | 86               | Failed on empty files. *Bug has been fixed.*
+3            | 86               | Failed on empty files. **_Bug has been fixed._**
 4            | 100              |
-5            | 70               | Program has been rewritten and *bug has been fixed.* `lab5.txt:` -2/15, insufficient answers to question 2 and 4.
+5            | 70               | Program has been rewritten and **_bug has been fixed._** `lab5.txt:` -2/15, insufficient answers to question 2 and 4.
 6            | 90               | Lab: 40/50
 7            | 95               | `sfrob.txt` incorrect function estimate. Need to use `nlogn` instead of linear regression
 8            | 100              |
